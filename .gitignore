@@ -1,0 +1,15 @@
+venv
+*.log
+*.env
+__pycache__
+*.pyc
+*.swp
+.vagrant
+.DS_Store
+staticfiles
+*.pid
+__pycache__
+.vscode/*
+*~
+*.log
+caw/static
