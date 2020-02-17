@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y curl \
 
 ADD requirements.txt /caw
 RUN pip install -U -r requirements.txt
-
+RUN python3 -m pip install django-markdownx
 
 ADD . /caw/
 
