@@ -4,6 +4,7 @@ from tags.models import Tag
 
 # rich text editor
 from tinymce.models import HTMLField
+from markdownx.models import MarkdownxField
 
 # alright searching is a way of life in this style guide
 # so we are gonna summon the T R I G R A M S
@@ -20,7 +21,8 @@ class StyleGuideEntry(models.Model):
 	tags = models.ManyToManyField(Tag, db_index=True) #can we index this? I guess we can
 	title = models.CharField(max_length=75, db_index=True) # definitely index this because we will search a looot
 	# see https://django-tinymce.readthedocs.io/en/latest/usage.html#external-link-and-image-lists
-	content = HTMLField(blank=True)
+	content = MarkdownxField(blank=True)
+	content_tinymc = HTMLField(blank=True)
 	section = models.CharField(max_length=2, choices=SECTION_CHOICES, default="", blank=True) # some can have no section
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)

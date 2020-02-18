@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     # dependencies
     'rest_framework', # REST API Utils
     'tinymce',        # Rich text editor
+    'markdownx',      # Markdown editor ()
 ]
 
 MIDDLEWARE = [
