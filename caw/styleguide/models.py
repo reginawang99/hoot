@@ -10,6 +10,12 @@ from markdownx.models import MarkdownxField
 # so we are gonna summon the T R I G R A M S
 # https://docs.djangoproject.com/en/2.2/ref/contrib/postgres/lookups/
 
+class Section(models.Model):
+	name = models.CharField(max_length=50, db_index=True)
+
+	def __str__(self):
+		return self.name
+
 class StyleGuideEntry(models.Model):
 	ARTS_AND_ENTERTAINMENT, OPINION, NEWS, SPORTS = "AE", "OP", "NW", "SP"
 	SECTION_CHOICES = [
@@ -23,7 +29,7 @@ class StyleGuideEntry(models.Model):
 	# see https://django-tinymce.readthedocs.io/en/latest/usage.html#external-link-and-image-lists
 	content = MarkdownxField(blank=True)
 	content_tinymc = HTMLField(blank=True)
-	section = models.CharField(max_length=2, choices=SECTION_CHOICES, default="", blank=True) # some can have no section
+	section = models.ManyToManyField(Section, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

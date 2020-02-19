@@ -5,16 +5,103 @@
 
 import csv
 import sys
+import json
+import re
+from markdownify import markdownify as md
 
-def process_row(row):
-	print(', '.join(row))
+styleguideentry_pk = 1
+
+tag_table = {}
+section_table = {}
+
+def get_tags(tags, entries):
+    t = re.split("\s*,\s*",tags)
+    out = []
+    for tag in t:
+        
+        if tag.lower() == "admission": tag = "admissions"
+        if tag == "" or tag == " ":
+            continue # skip
+
+        if tag in tag_table:
+            out.append(tag_table[tag])
+        else:
+            pk = len(tag_table) +1
+            tag_table[tag] = pk
+            entries.append( {
+                "model": "tags.tag",
+                "pk": pk,
+                "fields": {
+                  "text": tag
+                }
+            })
+            out.append(pk)
+    return out
+
+def get_sections(sections, entries):
+    t = re.split("\s*,\s*",sections)
+    if "news opinion" in t:
+        t.remove("news opinion")
+        t.append("news")
+        t.append("opinion")
+    out = []
+    for section in t:
+        section = section.lower()
+        if section == "" or section == " ":
+            continue # skip
+        if section == "a&e" or section == "arts":
+            section = "A&E"
+
+
+        section = section[0].upper() + section[1:]
+
+        if section in section_table:
+            out.append(section_table[section])
+        else:
+            pk = len(section_table) + 1
+            section_table[section] = pk
+            entries.append( {
+                "model": "styleguide.section",
+                "pk": pk,
+                "fields": {
+                  "name": section
+                }
+            })
+            out.append(pk)
+    return out
+
+def process_row(row, entries):
+    term,content,tags,sections = row
+    global styleguideentry_pk
+    styleguideentry_pk += 1
+    entries.append({
+        "model": "styleguide.styleguideentry",
+        "pk": styleguideentry_pk,
+        "fields": {
+          "title": term,
+          "content": md(content),
+          "content_tinymc": "",
+          "created_at": "2020-02-17T23:29:10.695Z",
+          "updated_at": "2020-02-18T23:24:32.299Z",
+          "tags": get_tags(tags, entries),
+          "section": get_sections(sections, entries)
+        }
+      })
 
 if __name__ == "__main__": 
-	if len(sys.argv) < 2:
-		print("Usage: python {} file.csv".format(sys.argv[0]))
-		exit(1)
+    if len(sys.argv) < 2:
+        print("Usage: python {} file.csv".format(sys.argv[0]))
+        exit(1)
+    entries = []
+    with open(sys.argv[1], 'rb') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='\"')
+        flag = False
+        for row in reader:
+            # skip first line
+            if not flag:
+                flag = True
+                continue
+            else:
+                process_row(row, entries)
 
-	with open(sys.argv[1], 'rb') as csvfile:
-	    reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-	    for row in reader:
-	        process_row(row)
+        print(json.dumps(entries, indent=4))
