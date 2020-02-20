@@ -63,8 +63,8 @@ INSTALLED_APPS = [
 
     # dependencies
     'rest_framework', # REST API Utils
-    'tinymce',        # Rich text editor
     'markdownx',      # Markdown editor ()
+    'django.contrib.postgres' # enable trigram search
 ]
 
 MIDDLEWARE = [
@@ -158,19 +158,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
-# Tiny MC: the rich text editor
-TINYMCE_DEFAULT_CONFIG={
-    'plugins': "table,spellchecker,paste,searchreplace",
-    'theme': "advanced",
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 10,
-    'relative_urls': False,
-    # # "plugins": [
-    #     'advlist autolink lists link image charmap print preview anchor',
-    #     'searchreplace visualblocks code fullscreen',
-    #     'insertdatetime media table paste code help wordcount'
-    # # ],
-    "toolbar": 'undo redo | formatselect |  bold italic backcolor | alignleft aligncenter  alignright alignjustify | bullist numlist outdent indent | removeformat | help'
-}
-TINYMCE_SPELLCHECKER = True
-TINYMCE_COMPRESSOR = True
+# Django Rest framework
+DEFAULT_PERMISSION_CLASSES = [
+    'rest_framework.permissions.IsAuthenticated',
+]
