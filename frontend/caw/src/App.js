@@ -5,10 +5,8 @@ import SearchResultsPanel from './SearchResultsPanel';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import SingleSearchResultView from './SingleSearchResultView';
 
-import config from "./config";
+import { SERVER_URL }  from "./config";
 import axios from "axios";
-
-const { SERVER_URL } = config;
 
 
 /**

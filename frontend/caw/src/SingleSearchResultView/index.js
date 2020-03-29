@@ -1,55 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import config from "../config";
 import axios from "axios";
 import ReactMarkdown from 'react-markdown';
+
+import {useParams} from 'react-router-dom';
 
 const { SERVER_URL } = config;
 
 /**
 * /entry/entry%20name
 */
-class SingleSearchResultView extends React.Component {
+function SingleSearchResultView (){
+	const { entryName } = useParams();
+	const [entry, setEntry] = useState(null);
+	const [hasErrored, setHasErrored] = useState(false);
 
-	state = {
-		isLoading: true, 
-		hasErrored: false
-	}
-
-	componentDidMount(){
-		const entryName = this.props.match.params.entryName;
-		console.log(this.props)
-		axios.get(`${SERVER_URL}/sg/entry/${entryName}`).then(({data}) => {
+	useEffect(() => {
+	    axios.get(`${SERVER_URL}/sg/entry/${entryName}`).then(({data}) => {
 			console.log(data);
-			this.setState({
-				...this.state,
+			setEntry({
 				title: data.title,
 				content: data.content,
 				section: data.section,
-				tags: data.tags,
-				isLoading: false
+				tags: data.tags
 			})
 		}).catch((error)=>{
-			console.log(error)
-			this.setState({
-				...this.state,
-				isLoading: false,
-				hasErrored: true
-			})
+			setHasErrored(true);
 		})
-	}
+	  }, [entryName]);
 
-	render(){
-		if(this.state.isLoading)
-			return <p> Loading... </p>
+	if(hasErrored)
+		return <p> Unable to find entry for &ldquo;{entryName}&rdquo;</p>
 
-		if(this.state.hasErrored)
-			return <p> Unable to find entry for "{this.props.match.params.entryName}"</p>
+	if(entry === null)
+		return <p> Loading... </p>
 
-		return <div>
-			<h1> {this.state.title} </h1>
-			<ReactMarkdown source={this.state.content} />
-		</div>;
-	}
+	return <div>
+		<h1> {entry.title} </h1>
+		<ReactMarkdown source={entry.content} />
+	</div>;
+
 }
 
 export default SingleSearchResultView;
