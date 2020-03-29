@@ -22,7 +22,10 @@ function Welcome() {
       </div>
 
       <div className="search-result-results">
+        { section === "all" ? 
+        <p>Searchs results will be from all sections </p> :
         <p>Searches results will exclusively {section}.</p>
+        }
         
       </div>
     </div>

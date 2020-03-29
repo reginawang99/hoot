@@ -16,13 +16,16 @@ import { SERVER_URL } from '../config';
 */
 function SearchResultsPanel() {
   const { query, section } = useParams();
+  const decoded_query = decodeURIComponent(query)
+  const decoded_section = decodeURIComponent(section)
+
   const [searchResults, setSearchResults] = useState(null);
-  const isFilteringToSection = section === "all";
+  const isFilteringToSection = decoded_section === "all";
 
   useEffect(() => {
     axios.get(`${SERVER_URL}/sg/search/`, {
       params: {
-        query,
+        query: decoded_query,
       },
     }).then((response) => {
         const modData = response.data.map((x) => ({ ...x, contentSummary: x.content }));
@@ -30,7 +33,7 @@ function SearchResultsPanel() {
         console.log(modData)
         setSearchResults(modData);
     });
-  }, [query]);
+  }, [decoded_query]);
 
   if (searchResults === null) return <p> Loading ... </p>;
 
@@ -41,7 +44,7 @@ function SearchResultsPanel() {
   if(isFilteringToSection)
     searchResultHeaderString = searchResults ? `SEARCH (${num_results_as_string})` : '';
   else
-    searchResultHeaderString = section + `  (${num_results_as_string})`
+    searchResultHeaderString = decoded_section + `  (${num_results_as_string})`
 
   return (
     <div className="search-result-body">
@@ -52,8 +55,8 @@ function SearchResultsPanel() {
 
       <div className="search-result-results">
         {
-              searchResults.map((x, index) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={index} />)
-            }
+          searchResults.map((x, index) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={index} />)
+        }
       </div>
     </div>
   );

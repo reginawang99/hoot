@@ -50,7 +50,7 @@ function search(history, query, currSection){
 // woah.
 // cs131
 
-function searchOnEnter (history, currSection){ 
+function searchOnEvent (history, currSection){ 
   return (e) => {
     if (e.key === 'Enter') {
       const newQuery = e.target.value;
@@ -80,8 +80,6 @@ function App() {
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
   
 
-  console.log("startign");
-  console.log(guides);
 
   return (
     
@@ -96,8 +94,8 @@ function App() {
               placeholder={currSection ? `searching ${currSection}` : "search here" }
               value={query} 
               onChange={(e) => setQuery(e.target.value)} 
-              onKeyDown={searchOnEnter(history, currSection)}/>
-            <Link className="header-search-button" to={`/search/all/${query}`}>S</Link>
+              onKeyDown={searchOnEvent(history, currSection)}/>
+            <button className="header-search-button">S</button>
           </div>
         </div>
         <div className="caw-body">
