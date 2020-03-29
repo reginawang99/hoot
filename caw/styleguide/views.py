@@ -16,12 +16,21 @@ from itertools import chain
 
 """
 This method will take a query:string and return a json object
-containing all the search results, paginated
+containing all the search results, not paginated
+TODO: handle sections
 """
 @api_view(http_method_names=['GET'])
 def search(request):
 	print(request.GET)
 	query = request.GET.get("query", None)
+	section = request.GET.get("section", None)
+	section_obj = None
+
+	if section is not None:
+		section_obj = Section.objects.filter(name=section).first()
+		if section_obj is None:
+			return Response("Invalid section '" + section + "'", status=400)
+
 	if query is None or query == "":
 		return Response("Must provide query", status=400)
 
@@ -33,6 +42,7 @@ def search(request):
 	title_results = list(chain(title_results, StyleGuideEntry.objects.filter(title__startswith=query)))
 
 	body_results = StyleGuideEntry.objects.filter(content__search=query)
+
 
 	tag_results = StyleGuideEntry.objects.annotate(
 		similarity=TrigramSimilarity('tags__text', query),

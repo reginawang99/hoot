@@ -9,11 +9,23 @@
   font-weight: 800;
   font-size: 20px;
   color: #8EA0CF;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   padding-left: 10px;
   border: 1px solid #8EA0CF;
+}
 
+.search-result-header-inverse{
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  background-color: #8EA0CF;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border: 1px solid #8EA0CF;
 }
 
 .search-result-results {

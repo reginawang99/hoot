@@ -9,7 +9,7 @@ import { SERVER_URL } from '../config';
 /**
 * /entry/entry%20name
 */
-function SingleSearchResultView() {
+function SingleEntryView() {
   const { entryName } = useParams();
   const [entry, setEntry] = useState(null);
   const [hasErrored, setHasErrored] = useState(false);
@@ -42,15 +42,15 @@ function SingleSearchResultView() {
   if (entry === null) return <p> Loading... </p>;
 
   return (
-    <div>
-      <h1>
-        {' '}
+    <div className="search-result-body">
+      <div className="search-result-header-inverse">
         {entry.title}
-        {' '}
-      </h1>
-      <ReactMarkdown source={entry.content} />
+      </div>
+      <div className="search-result-results">
+          <ReactMarkdown source={entry.content} />
+      </div>
     </div>
   );
 }
 
-export default SingleSearchResultView;
+export default SingleEntryView;
