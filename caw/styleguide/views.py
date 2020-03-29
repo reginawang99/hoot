@@ -6,8 +6,8 @@ from rest_framework.response import Response
 # https://docs.djangoproject.com/en/3.0/ref/contrib/postgres/search/
 from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
 from django.shortcuts import get_object_or_404
-from .models import StyleGuideEntry, Section
-from .serializers import StyleGuideEntrySerializer, SectionSerializer
+from .models import StyleGuideEntry, Section, Guide, QuickLink
+from .serializers import StyleGuideEntrySerializer, SectionSerializer, QuickLinkSerializer, GuideSerializer
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets
@@ -54,22 +54,22 @@ def search(request):
 	return Response(serializer.data)
 
 
-@api_view
+@api_view(http_method_names=['GET'])
 def get_all_sections(request):
 	serializer = SectionSerializer(Section.objects.all(), many=True)
 	return Response(serializer.data)
 
-@api_view
+@api_view(http_method_names=['GET'])
 def get_all_quick_links(request):
 	serializer = QuickLinkSerializer(QuickLink.objects.all(), many=True)
 	return Response(serializer.data)
 
-@api_view
+@api_view(http_method_names=['GET'])
 def get_all_guides(request):
 	serializer = GuideSerializer(Guide.objects.all(), many=True)
 	return Response(serializer.data)
    
-@api_view(('GET',))
+@api_view(http_method_names=['GET'])
 def get_single_entry(request, name):
 	obj = StyleGuideEntry.objects.filter(title=name)
 	if len(obj) != 1:

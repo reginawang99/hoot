@@ -1,56 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
-import SearchResult from "../SearchResult";
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import SearchResult from '../SearchResult';
 
-import config from "../config";
-import axios from "axios";
+import { SERVER_URL } from '../config';
 
-const { SERVER_URL } = config;
 /**
 * props = {
-  header: header, 
+  header: header,
   body: [
      {text: "asdf", link: "http://link.com"}
   ]
 }
 */
-function SearchResultsPanel () {
-	const { query } = useParams();
-	const [searchResults, setSearchResults] = useState(null);
+function SearchResultsPanel() {
+  const { query } = useParams();
+  const [searchResults, setSearchResults] = useState(null);
 
-	useEffect(() => {
-	    axios.get(`${SERVER_URL}/sg/search/`, {
-	      params: {
-	      	query: query
-	      }
-	    }).then((response) => {
-      		let modData = response.data;
-        	//TODO: replace this with word truncater and markdown remover.
-        	setSearchResults( modData.map(x => ({...x, contentSummary: x.content})))
-	    })
-	  }, [query]);
+  useEffect(() => {
+        axios.get(`${SERVER_URL}/sg/search/`, {
+          params: {
+            query,
+          },
+        }).then((response) => {
+            const modData = response.data.map((x) => ({ ...x, contentSummary: x.content }));
+            // TODO: replace this with word truncater and markdown remover.
+            console.log(modData)
+            setSearchResults(modData);
+        });
+      }, [query]);
 
-	if(searchResults === null)
-		return <p> Loading ... </p>;
+  if (searchResults === null) return <p> Loading ... </p>;
 
+  console.log("triggered rerender")
+  const searchResultHeaderString = searchResults ? `SEARCH RESULT${(searchResults.length === 1 ? '' : 'S')} (${searchResults.length})` : '';
+  return (
+    <div className="search-result-body">
 
-	const searchResultHeaderString = searchResults? `SEARCH RESULT${(searchResults.length === 1? "": "S")} (${searchResults.length})`: "";
-	return (
-		<div className="search-result-body">
-	    
-	      <div className="search-result-header"> 
-	          {searchResultHeaderString}
-	      </div>
-	      
-	      <div className="search-result-results">
-	        {
-	          searchResults.map(x =>  <SearchResult term={x.title} contentSummary={x.contentSummary} key={x.title}/>)
-	        }
-	      </div>
-	    </div>
-	);
+      <div className="search-result-header">
+        {searchResultHeaderString}
+      </div>
 
+      <div className="search-result-results">
+        {
+              searchResults.map((x, index) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={index} />)
+            }
+      </div>
+    </div>
+  );
 }
 
 export default SearchResultsPanel;
