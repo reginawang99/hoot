@@ -1,26 +1,12 @@
-venv
-*.log
-*.env
-__pycache__
-*.pyc
-*.swp
-.vagrant
-.DS_Store
-staticfiles
-*.pid
-__pycache__
-.vscode/*
-*~
-*.log
-caw/static
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-node_modules
-.pnp
+/node_modules
+/.pnp
 .pnp.js
 
 # testing
-coverage
+/coverage
 
 # production
 /build

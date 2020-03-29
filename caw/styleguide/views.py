@@ -5,9 +5,12 @@ from rest_framework.response import Response
 # so we are gonna summon the T R I G R A M S
 # https://docs.djangoproject.com/en/3.0/ref/contrib/postgres/search/
 from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
+from django.shortcuts import get_object_or_404
 from .models import StyleGuideEntry, Section
-from .serializers import StyleGuideEntrySerializer
+from .serializers import StyleGuideEntrySerializer, SectionSerializer
+
 from rest_framework.renderers import JSONRenderer
+from rest_framework import viewsets
 
 from itertools import chain
 
@@ -15,12 +18,12 @@ from itertools import chain
 This method will take a query:string and return a json object
 containing all the search results, paginated
 """
-@api_view(http_method_names=['POST'])
+@api_view(http_method_names=['GET'])
 def search(request):
-	print(request.data)
-	query = request.data.get("query", None)
-	if query is None:
-		return Response(status=400)
+	print(request.GET)
+	query = request.GET.get("query", None)
+	if query is None or query == "":
+		return Response("Must provide query", status=400)
 
 	# actual queries TODO: order and sort them by relavance
 	title_results = StyleGuideEntry.objects.annotate(
@@ -48,4 +51,28 @@ def search(request):
 	# results
 	results = list(chain(title_results, body_results, tag_results, section_results))
 	serializer = StyleGuideEntrySerializer(results, many=True)
+	return Response(serializer.data)
+
+
+@api_view
+def get_all_sections(request):
+	serializer = SectionSerializer(Section.objects.all(), many=True)
+	return Response(serializer.data)
+
+@api_view
+def get_all_quick_links(request):
+	serializer = QuickLinkSerializer(QuickLink.objects.all(), many=True)
+	return Response(serializer.data)
+
+@api_view
+def get_all_guides(request):
+	serializer = GuideSerializer(Guide.objects.all(), many=True)
+	return Response(serializer.data)
+   
+@api_view(('GET',))
+def get_single_entry(request, name):
+	obj = StyleGuideEntry.objects.filter(title=name)
+	if len(obj) != 1:
+		return Response(status=404)
+	serializer = StyleGuideEntrySerializer(obj[0])
 	return Response(serializer.data)

@@ -1,0 +1,44 @@
+body{
+  background: #FFFFFF;
+}
+.header {
+  background: linear-gradient(180deg, #7395ED 0%, #DBE5FF 100%);
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+.header-text {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 50px;
+  text-align: center;
+
+  color: #FFFFFF;
+}
+
+.header-search-input {
+  width: 80%;
+}
+
+.header-search-button {
+  width: 10%;
+}
+
+/** Body **/
+
+.caw-body{
+  display: flex;
+  flex-direction: horizontal;
+}
+
+.search-result-container{
+  width: 75%;
+  padding-left: 30px;
+  padding-top: 30px;
+}

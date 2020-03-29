@@ -19,5 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('markdownx/', include('markdownx.urls')),
-    path('sg/', include("styleguide.urls"))
+    path('api/v1/sg/', include("styleguide.urls"))
 ]

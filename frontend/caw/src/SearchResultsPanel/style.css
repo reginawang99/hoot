@@ -1,0 +1,32 @@
+
+.search-result-body{
+/*    border: 1px solid #8EA0CF;
+*/}
+
+.search-result-header {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  color: #8EA0CF;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  border: 1px solid #8EA0CF;
+
+}
+
+.search-result-results {
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  border: 1px solid #8EA0CF;
+  border-top: 0;
+}
+
+.link-sidebar {
+  width: 25%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+

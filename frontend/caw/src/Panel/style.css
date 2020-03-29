@@ -1,0 +1,52 @@
+.link-panel {
+	background: #FFFFFF;
+	border: 1px solid #8EA0CF;
+	box-sizing: border-box;
+	/* I feel like this is kinda weird to have components do their own margins and width but oh well*/
+	margin-top: 20px;
+}
+
+.link-panel-header {
+	background: #8EA0CF;
+	font-family: Poppins;
+	font-weight: 800;
+	font-size: 20px;
+	color: #FFFFFF;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.link-panel-list {
+  list-style-type: none;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  overflow-y: scroll;
+  height: 80px;
+}
+
+a.link-panel-link {
+  font-family: Source Sans Pro;
+  font-size: 16px;
+  color: black;
+  margin-bottom: 10px;
+  display:inline-block;
+}
+
+a.link-panel-link:link {
+  text-decoration: none;
+}
+
+/* visited link: in my opinion, it looks weird when the link changes color after being visited*/
+a.link-panel-link:visited {
+  text-decoration: none;
+}
+
+/* mouse over link */
+a.link-panel-link:hover {
+  color: grey;	
+}
+
