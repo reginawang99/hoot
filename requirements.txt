@@ -1,9 +1,16 @@
+/usr/local/lib/python3.6/site-packages/environ/environ.py:630: UserWarning: /code/hoot/hoot/.env doesn't exist - if you're not configuring your environment separately, create one.
+  "environment separately, create one." % env_file)
+[36;1mOperations to perform:[0m
+[1m  Apply all migrations: [0madmin, auth, contenttypes, sessions, styleguide, tags
+[36;1mRunning migrations:[0m
+  No migrations to apply.
 asgiref==3.2.3
 certifi==2019.11.28
 chardet==3.0.4
 defusedxml==0.6.0
 Django==3.0.3
 django-allauth==0.38.0
+django-cors-headers==3.2.1
 django-environ==0.4.5
 django-filter==2.2.0
 django-markdownx==3.0.1
@@ -26,4 +33,3 @@ social-auth-app-django==3.1.0
 social-auth-core==3.2.0
 sqlparse==0.3.0
 urllib3==1.25.8
-django-cors-headers==3.2.1

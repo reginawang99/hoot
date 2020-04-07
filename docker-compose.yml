@@ -3,12 +3,12 @@ version: "3"
 services:
   web:
     build: .
-    image: caw
+    image: hoot
     # later on, the command will be the commented one
     # only issue now is that gunicorn can easily be ddos-ed so we have to put it behind nginx
     # and nginx should be the one serving static files.
-    #command: gunicorn --bind 0.0.0.0:5000 --pythonpath caw caw.wsgi --log-file -
-    command: python caw/manage.py runserver 0.0.0.0:5000 
+    #command: gunicorn --bind 0.0.0.0:5000 --pythonpath hoot hoot.wsgi --log-file -
+    command: python hoot/manage.py runserver 0.0.0.0:5000 
     ports:
       - "5000:5000"
     env_file: .env
@@ -17,6 +17,6 @@ services:
     # by making the working directory (see Dockerfile) a volume, when we update our file system's copy, it updates the docker container's
     # I think - Neil
     volumes:
-      - .:/caw 
+      - .:/code 
   db:
     image: postgres:latest

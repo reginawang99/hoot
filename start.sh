@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 
-python caw/manage.py migrate
+python hoot/manage.py migrate
 
 exec "$@"

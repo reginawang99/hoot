@@ -5,17 +5,17 @@ FROM python:3.6
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /caw
+WORKDIR /code
 
 # I'm not sure what these are for tbh but yeah
 RUN apt-get update && apt-get install -y curl \
   build-essential \
   libpq-dev
 
-ADD requirements.txt /caw
+ADD requirements.txt /code
 RUN pip install -U -r requirements.txt
 
-ADD . /caw/
+ADD . /code/
 
 EXPOSE 5000
 
