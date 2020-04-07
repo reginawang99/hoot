@@ -28,6 +28,8 @@ body{
 
 .header-search-button {
   width: 10%;
+  background-color: #8EA0CF;
+  border: 0px;
 }
 
 /** Body **/

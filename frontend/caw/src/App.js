@@ -10,8 +10,13 @@ import SearchResultsPanel from './TopLevelPanels/SearchResultsPanel';
 import SingleEntryView from './TopLevelPanels/SingleEntryView';
 import { SERVER_URL } from './config';
 import axios from 'axios';
+import keymap from './keymap'
+import { ShortcutManager, Shortcuts } from 'react-shortcuts'
 
 
+
+const shortcutManager = new ShortcutManager(keymap)
+const ShortcutsContext = React.createContext({ shortcuts: shortcutManager });
 
 
 /**
@@ -50,7 +55,7 @@ function search(history, query, currSection){
 // woah.
 // cs131
 
-function searchOnEvent (history, currSection){ 
+function searchOnEnter (history, currSection){ 
   return (e) => {
     if (e.key === 'Enter') {
       const newQuery = e.target.value;
@@ -59,11 +64,18 @@ function searchOnEvent (history, currSection){
   }
 }
 
+
 function onSectionPanelClick (setCurrSection, history, query){
   return (x) => { // x is passed by FunctionPanel 
     const newSection = x.text;
     setCurrSection(newSection)
     search(history, query, newSection)
+  }
+}
+
+function handleShortcuts(history){
+  return (action, event) => {
+    console.log(action);
   }
 }
 
@@ -80,53 +92,53 @@ function App() {
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
   
 
-
   return (
     
-      <div className="App">
-        <div className="header">
-          <h1 className="header-text">DAILY BRUIN STYLE GUIDE</h1>
-          <div>
-            <input 
-              className="header-search-input" 
-              type="text" 
-              autoFocus
-              placeholder={currSection ? `searching ${currSection}` : "search here" }
-              value={query} 
-              onChange={(e) => setQuery(e.target.value)} 
-              onKeyDown={searchOnEvent(history, currSection)}/>
-            <button className="header-search-button">S</button>
+        <div className="App">
+          <div className="header">
+            <h1 className="header-text">DAILY BRUIN STYLE GUIDE</h1>
+            <div>
+              <input 
+                className="header-search-input" 
+                type="text" 
+                autoFocus
+                placeholder={currSection ? `searching ${currSection}` : "search here" }
+                value={query} 
+                onChange={(e) => setQuery(e.target.value)} 
+                onKeyDown={searchOnEnter(history, currSection)}/>
+              <button className="header-search-button" onClick={() => search(history, query, currSection)}><img src="/Mask.svg"/></button>
+            </div>
+          </div>
+          <div className="caw-body">
+            <div className="search-result-container">
+
+              <Route exact path="/entry/:entryName" component={SingleEntryView} />
+              <Route exact path="/" component={Welcome} />
+              <Route exact path="/search/:section" component={SectionHome} />
+              <Route exact path="/search/:section/:query" component={SearchResultsPanel} />
+
+            </div>
+
+            <div className="link-sidebar">
+              <FunctionPanel
+                header="Sections"
+                body={sections.map(x => ({...x, text: x.name}))}
+                callback={onSectionPanelClick(setCurrSection, history, query)}
+              />
+              <LinkPanel
+                header="Quick Links"
+                body={quickLinks}
+              />
+              <LinkPanel
+                header="Guides"
+                body={guides}
+              />
+
+            </div>
           </div>
         </div>
-        <div className="caw-body">
-          <div className="search-result-container">
+      
 
-            <Route exact path="/entry/:entryName" component={SingleEntryView} />
-            <Route exact path="/" component={Welcome} />
-            <Route exact path="/search/:section" component={SectionHome} />
-            <Route exact path="/search/:section/:query" component={SearchResultsPanel} />
-
-          </div>
-
-          <div className="link-sidebar">
-            <FunctionPanel
-              header="Sections"
-              body={sections.map(x => ({...x, text: x.name}))}
-              callback={onSectionPanelClick(setCurrSection, history, query)}
-            />
-            <LinkPanel
-              header="Quick Links"
-              body={quickLinks}
-            />
-            <LinkPanel
-              header="Guides"
-              body={guides}
-            />
-
-          </div>
-        </div>
-      </div>
-    
   );
 }
 
