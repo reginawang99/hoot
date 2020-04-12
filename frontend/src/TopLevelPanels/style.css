@@ -15,6 +15,19 @@
   border: 1px solid #8EA0CF;
 }
 
+.search-result-header-wo-border {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  color: #8EA0CF;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-left: 1px solid #8EA0CF;
+  border-right: 1px solid #8EA0CF;
+}
+
 .search-result-header-inverse{
   font-family: Poppins;
   font-style: normal;

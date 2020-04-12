@@ -93,7 +93,7 @@ def search(request):
 	return Response(serializer.data)
 
 @api_view(http_method_names=['GET'])
-def recommend(request):
+def recommended_search_results(request):
 	# in this method, we can perform more intensive searches. for example, we will do 
 	query = request.GET.get("query", None)
 	if query is None or query == "":
