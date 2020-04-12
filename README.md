@@ -12,7 +12,7 @@
 
 ## notes for neil
 1. Fix data from spreadsheets function   ✓
-2. Add recommended search
+2. Add recommended search ✓
 3. fix url encoding/decoding bugs
 3. Keyboard shortcuts
 

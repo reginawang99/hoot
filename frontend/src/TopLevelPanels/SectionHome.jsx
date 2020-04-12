@@ -11,20 +11,21 @@ import './style.css';
   ]
 }
 */
-function Welcome() {
+function SectionHome() {
   const { section } = useParams();
+  const dSection = decodeURIComponent(section)
 
   return (
     <div className="search-result-body">
 
       <div className="search-result-header">
-        {section}
+        {dSection}
       </div>
 
       <div className="search-result-results">
-        { section === "all" ? 
-        <p>Searchs results will be from all sections </p> :
-        <p>Searches results will exclusively {section}.</p>
+        { dSection === "all" ? 
+        <p>Search results will be from all sections </p> :
+        <p>Search results will exclusively {dSection}.</p>
         }
         
       </div>
@@ -32,4 +33,4 @@ function Welcome() {
   );
 }
 
-export default Welcome;
+export default SectionHome;
