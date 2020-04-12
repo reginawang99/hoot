@@ -13,6 +13,7 @@ __pycache__
 *~
 *.log
 hoot/static
+markdownx
 
 # dependencies
 node_modules

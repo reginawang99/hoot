@@ -80,7 +80,6 @@ def process_row(row, entries):
         "fields": {
           "title": term,
           "content": md(content),
-          "content_tinymc": "",
           "created_at": "2020-02-17T23:29:10.695Z",
           "updated_at": "2020-02-18T23:24:32.299Z",
           "tags": get_tags(tags, entries),
@@ -92,8 +91,9 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python {} file.csv".format(sys.argv[0]))
         exit(1)
+
     entries = []
-    with open(sys.argv[1], 'rb') as csvfile:
+    with open(sys.argv[1], 'rt') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='\"')
         flag = False
         for row in reader:
@@ -105,3 +105,4 @@ if __name__ == "__main__":
                 process_row(row, entries)
 
         print(json.dumps(entries, indent=4))
+
