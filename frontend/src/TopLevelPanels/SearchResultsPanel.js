@@ -20,20 +20,25 @@ function SearchResultsPanel() {
   const decoded_section = decodeURIComponent(section)
 
   const [searchResults, setSearchResults] = useState(null);
-  const isFilteringToSection = decoded_section === "all";
+  const isSearchingAll = decoded_section === "all";
 
   useEffect(() => {
-    axios.get(`${SERVER_URL}/sg/search/`, {
-      params: {
+    setSearchResults(null)
+    let params = {
         query: decoded_query,
-      },
+    };
+    if(!isSearchingAll)
+      params["section"] = decoded_section
+
+    axios.get(`${SERVER_URL}/sg/search/`, {
+      params: params
     }).then((response) => {
         const modData = response.data.map((x) => ({ ...x, contentSummary: x.content }));
         // TODO: replace this with word truncater and markdown remover.
         console.log(modData)
         setSearchResults(modData);
     });
-  }, [decoded_query]);
+  }, [decoded_query, decoded_section, isSearchingAll]);
 
   if (searchResults === null) return <p> Loading ... </p>;
 
@@ -41,7 +46,7 @@ function SearchResultsPanel() {
 
   let searchResultHeaderString;
   let num_results_as_string = `${searchResults.length} RESULT${(searchResults.length === 1 ? '' : 'S')}`
-  if(isFilteringToSection)
+  if(isSearchingAll)
     searchResultHeaderString = searchResults ? `SEARCH (${num_results_as_string})` : '';
   else
     searchResultHeaderString = decoded_section + `  (${num_results_as_string})`

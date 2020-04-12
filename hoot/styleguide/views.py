@@ -14,6 +14,54 @@ from rest_framework import viewsets
 
 from itertools import chain
 
+
+# some code which can be used for recommended results
+
+# if it matches an exact section, we can assume they were searching for that
+# if they didn't type it exactly, then we can't assume that. The only exception is 
+# A&E, which is also called arts. For now, we will not handle that special case, but in the future
+# we could be adding alternate name field to Section
+# query_in_section_format = query.lower()
+# query_in_section_format = query_in_section_format[0].upper() + query_in_section_format[1:]
+# section_results = StyleGuideEntry.objects.filter(section__name=query_in_section_format)
+
+# https://docs.djangoproject.com/en/3.0/ref/models/querysets/#field-lookups
+def get_title_results(query, section_obj=None):
+	if section_obj:
+		title_results = StyleGuideEntry.objects.annotate(
+			similarity=TrigramSimilarity('title', query),
+		).filter(section=section_obj).filter(similarity__gt=0.4).order_by('-similarity') 
+
+		# since trigrams are bad at startswith queries when query is much smaller than field
+		# possibly add icontains
+		return list(chain(
+			title_results, 
+			StyleGuideEntry.objects.filter(section=section_obj).filter(title__istartswith=query)
+			)
+		)
+	else:
+		title_results = StyleGuideEntry.objects.annotate(
+			similarity=TrigramSimilarity('title', query),
+		).filter(similarity__gt=0.4).order_by('-similarity') 
+
+		# since trigrams are bad at startswith queries when query is much smaller than field
+		# possibly add icontains
+		return list(chain(title_results, StyleGuideEntry.objects.filter(title__istartswith=query)))
+
+def get_content_results(query, section_obj=None):
+	if section_obj:
+		return StyleGuideEntry.objects.filter(section=section_obj).filter(content__search=query)
+	return StyleGuideEntry.objects.filter(content__search=query)
+
+def get_tag_results(query):
+	tag_results = StyleGuideEntry.objects.annotate(
+		similarity=TrigramSimilarity('tags__text', query),
+	).filter(similarity__gt=0.6).order_by('-similarity')
+	# since trigrams are bad at startswith queries when query is much smaller than field
+	# possible add icontains
+	tag_results = list(chain(tag_results, StyleGuideEntry.objects.filter(tags__text__istartswith=query)))
+	return tag_results
+
 """
 This method will take a query:string and return a json object
 containing all the search results, not paginated
@@ -21,47 +69,41 @@ TODO: handle sections
 """
 @api_view(http_method_names=['GET'])
 def search(request):
-	print(request.GET)
 	query = request.GET.get("query", None)
 	section = request.GET.get("section", None)
 	section_obj = None
 
+	if query is None or query == "":
+		return Response("Must provide query", status=400)
+
+	# sections optionally filters by section name. 
 	if section is not None:
 		section_obj = Section.objects.filter(name=section).first()
 		if section_obj is None:
 			return Response("Invalid section '" + section + "'", status=400)
 
+	
+	title_results = get_title_results(query, section_obj)
+	body_results = get_content_results(query, section_obj)
+
+
+	# results
+	results = list(chain(title_results, body_results))
+	serializer = StyleGuideEntrySerializer(results, many=True)
+	return Response(serializer.data)
+
+@api_view(http_method_names=['GET'])
+def recommend(request):
+	# in this method, we can perform more intensive searches. for example, we will do 
+	query = request.GET.get("query", None)
 	if query is None or query == "":
 		return Response("Must provide query", status=400)
 
-	# actual queries TODO: order and sort them by relavance
-	title_results = StyleGuideEntry.objects.annotate(
-		similarity=TrigramSimilarity('title', query),
-	).filter(similarity__gt=0.4).order_by('-similarity') 
-	# since trigrams are bad at startswith queries when query is much smaller than field
-	title_results = list(chain(title_results, StyleGuideEntry.objects.filter(title__startswith=query)))
+	results = get_tag_results(query)
 
-	body_results = StyleGuideEntry.objects.filter(content__search=query)
-
-
-	tag_results = StyleGuideEntry.objects.annotate(
-		similarity=TrigramSimilarity('tags__text', query),
-	).filter(similarity__gt=0.6).order_by('-similarity')
-	# since trigrams are bad at startswith queries when query is much smaller than field
-	tag_results = list(chain(tag_results, StyleGuideEntry.objects.filter(tags__text__startswith=query)))
-
-	# if it matches an exact section, we can assume they were searching for that
-	# if they didn't type it exactly, then we can't assume that. The only exception is 
-	# A&E, which is also called arts. For now, we will not handle that special case, but in the future
-	# we could be adding alternate name field to Section
-	query_in_section_format = query.lower()
-	query_in_section_format = query_in_section_format[0].upper() + query_in_section_format[1:]
-	section_results = StyleGuideEntry.objects.filter(section__name=query_in_section_format)
-
-	# results
-	results = list(chain(title_results, body_results, tag_results, section_results))
 	serializer = StyleGuideEntrySerializer(results, many=True)
 	return Response(serializer.data)
+
 
 
 @api_view(http_method_names=['GET'])
