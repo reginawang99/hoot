@@ -22,7 +22,8 @@ function Welcome() {
         <p>Use the search bar above to find entries</p>
         <h3> Keyboard shortcuts </h3>
         <ul>
-          <li>ESC Clear Search Options</li>
+          <li>COMMAND+SHIFT+K/CONTROL+SHIFT+K Clear Search</li>
+          <li>COMMAND+SHIFT+L/CONTROL+SHIFT+L Focus on Search input</li>
         </ul>
       </div>
     </div>

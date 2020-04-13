@@ -9,7 +9,7 @@ import { SERVER_URL } from '../config';
 function results_string(results){
   if (results === null)
     return "";
-  if (results.length == 1)
+  if (results.length === 1)
     return "1 RESULT";
   return `${results.length} RESULTS`
 }

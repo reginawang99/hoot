@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Route, Link, useHistory} from 'react-router-dom';
 
 
@@ -10,13 +10,9 @@ import SearchResultsPanel from './TopLevelPanels/SearchResultsPanel';
 import SingleEntryView from './TopLevelPanels/SingleEntryView';
 import { SERVER_URL } from './config';
 import axios from 'axios';
-import keymap from './keymap'
-import { ShortcutManager, Shortcuts } from 'react-shortcuts'
 
+import { useHotkeys } from 'react-hotkeys-hook';
 
-
-const shortcutManager = new ShortcutManager(keymap)
-const ShortcutsContext = React.createContext({ shortcuts: shortcutManager });
 
 
 /**
@@ -55,8 +51,20 @@ function search(history, query, currSection){
 // woah.
 // cs131
 
-function searchOnEnter (history, currSection){ 
+function searchOnEnter (history, currSection, setQuery){ 
   return (e) => {
+    if(
+      (e.ctrlKey || e.metaKey) && (e.key.toLowerCase() == 'l' || e.key.toLowerCase() == 'k')
+    ){
+      e.preventDefault()
+      if(e.key.toLowerCase() == 'k'){
+        setQuery('')
+      }
+    }
+    console.log(e.key)
+    console.log(e.ctrlKey)
+    console.log(e.metaKey)
+    console.log(e)
     if (e.key === 'Enter') {
       const newQuery = e.target.value;
       search(history, newQuery, currSection)
@@ -73,23 +81,30 @@ function onSectionPanelClick (setCurrSection, history, query){
   }
 }
 
-function handleShortcuts(history){
-  return (action, event) => {
-    console.log(action);
-  }
-}
-
 
 function App() {
   const history = useHistory();
 
   const [query, setQuery] = useState('');
+  const queryInput = useRef(null);
   //represents which section we are searching
   //null means that we are using all section
   const [currSection, setCurrSection] = useState(null); 
   const sections = useOnetimeAPIFetch(`${SERVER_URL}/sg/sections`, []);
   const quickLinks = useOnetimeAPIFetch(`${SERVER_URL}/sg/quick-links`, []);
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
+
+
+  useHotkeys('ctrl+k', (e) =>{ 
+    e.preventDefault()
+    setQuery('') 
+    queryInput.current.focus();
+  });
+
+  useHotkeys('ctrl+l', (e) =>{ 
+    e.preventDefault()
+    queryInput.current.focus();
+  });
   
 
   return (
@@ -101,11 +116,11 @@ function App() {
               <input 
                 className="header-search-input" 
                 type="text" 
-                autoFocus
+                ref={queryInput}
                 placeholder={currSection ? `searching ${currSection}` : "search here" }
                 value={query} 
                 onChange={(e) => setQuery(e.target.value)} 
-                onKeyDown={searchOnEnter(history, currSection)}/>
+                onKeyDown={searchOnEnter(history, currSection, setQuery)}/>
               <button className="header-search-button" onClick={() => search(history, query, currSection)}><img src="/Mask.svg"/></button>
             </div>
           </div>

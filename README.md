@@ -13,8 +13,10 @@
 ## notes for neil
 1. Fix data from spreadsheets function   ✓
 2. Add recommended search ✓
-3. fix url encoding/decoding bugs
-3. Keyboard shortcuts
+3. fix url encoding/decoding bugs ✓?
+3. Keyboard shortcuts (focus search, clear search)
+4. nginx deployment strategy 
+1. logging stats
 
 ## Small things
 1. Improve docker file
@@ -24,3 +26,4 @@
 3. Sometimes "Loading.." does not show up ✓
 1. When you have something searched and you switch sections, it doesn't re issue a query ✓
 1. Clear section filtering 
+1. 
