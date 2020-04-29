@@ -11,6 +11,7 @@ body {
   padding-bottom: 30px;
   padding-left: 15%;
   padding-right: 15%;
+  text-align: center;
 }
 
 .header-text {
@@ -19,18 +20,32 @@ body {
   font-weight: 800;
   font-size: 50px;
   text-align: center;
-
+  text-decoration: none;
   color: #FFFFFF;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.header-search-input-button-div{
+  display: flex;
+  justify-content:center;
 }
 
 .header-search-input {
   width: 80%;
+  height: 20px;
 }
 
 .header-search-button {
-  width: 10%;
+  width: 45px;
   background-color: #8EA0CF;
   border: 0px;
+  height: 28px;
+}
+.header-search-button img {
+  margin: 5px;
+  height: 18px;
 }
 
 /** Body **/

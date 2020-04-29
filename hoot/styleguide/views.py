@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # alright searching is a way of life in this style guide
-# so we are gonna summon the T R I G R A M S
+# so we are gonna summon the (T (R) (I) (G) (R) (A) (M) S)
 # https://docs.djangoproject.com/en/3.0/ref/contrib/postgres/search/
 from django.contrib.postgres.search import TrigramSimilarity, TrigramDistance
 from django.shortcuts import get_object_or_404

@@ -20,6 +20,7 @@ function Welcome() {
 
       <div className="search-result-results">
         <p>Use the search bar above to find entries</p>
+        <p>Click on a section to filter by that section</p>
         <h3> Keyboard shortcuts </h3>
         <table className="shortcuts-table">
           <tr className="header">

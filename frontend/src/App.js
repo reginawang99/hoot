@@ -105,8 +105,8 @@ function App() {
     
         <div className="App">
           <div className="header">
-            <h1 className="header-text">DAILY BRUIN STYLE GUIDE</h1>
-            <div>
+            <a href="/" className="header-text">DAILY BRUIN STYLE GUIDE</a>
+            <div className="header-search-input-button-div">
               <input 
                 className="header-search-input" 
                 type="text" 

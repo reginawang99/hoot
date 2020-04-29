@@ -25,7 +25,7 @@ function SectionHome() {
       <div className="search-result-results">
         { dSection === "all" ? 
         <p>Search results will be from all sections </p> :
-        <p>Search results will exclusively {dSection}.</p>
+        <p>Search results will exclusively for {dSection}.</p>
         }
         
       </div>
