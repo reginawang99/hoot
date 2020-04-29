@@ -84,8 +84,6 @@ function SearchResultsPanel() {
           RECOMMENDED ({results_string(recommendedResults)})
         </div>
       <div className="search-result-results">
-
-
         {
           recommendedResults?
           recommendedResults.map((x, index) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={index} />): null

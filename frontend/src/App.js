@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Route, Link, useHistory} from 'react-router-dom';
+import { Route, Link, useHistory, useParams} from 'react-router-dom';
 
 
 import './App.css';
@@ -12,27 +12,10 @@ import { SERVER_URL } from './config';
 import axios from 'axios';
 
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useOnetimeAPIFetch } from './utils/api.js'
+import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from './utils/keyboardShortcuts.js'
 
 
-
-/**
-* This application is pretty simple. TODO update this
-*/
-function useOnetimeAPIFetch(url, initial) {  
-  const [data, setData] = useState(initial);
-
-  useEffect(() => {
-    axios.get(url).then(result => {
-      console.log(result)
-      setData(result.data)
-    }).catch((error) => {
-      //TODO
-      console.log("error!" + error)
-    });
-  }, [url]); //will only run again if the url changes
-
-  return data;
-}
 
 function search(history, query, currSection){
   let sectionString;
@@ -48,23 +31,11 @@ function search(history, query, currSection){
 }
 
 // the following functions are curried
-// woah.
-// cs131
+// woah cs 131 EgErT
 
 function searchOnEnter (history, currSection, setQuery){ 
   return (e) => {
-    if(
-      (e.ctrlKey || e.metaKey) && (e.key.toLowerCase() == 'l' || e.key.toLowerCase() == 'k')
-    ){
-      e.preventDefault()
-      if(e.key.toLowerCase() == 'k'){
-        setQuery('')
-      }
-    }
-    console.log(e.key)
-    console.log(e.ctrlKey)
-    console.log(e.metaKey)
-    console.log(e)
+    executeAllShortcuts(e, setQuery, null) //we won't pass it the <input> tag because its already focused
     if (e.key === 'Enter') {
       const newQuery = e.target.value;
       search(history, newQuery, currSection)
@@ -81,6 +52,30 @@ function onSectionPanelClick (setCurrSection, history, query){
   }
 }
 
+/*
+* Root component
+*  Every single page has the search bar and the sidebar
+*  there is a react router switch for the body of the page. it displays:
+*     * Welcome page       TODO: rename to Welcome
+*     * Section Home       TODO: rename to Section Landing
+*     * SingleEntryView    TODO: rename Entry
+*     * SearchResultsPanel TODO: rename to SearchResults
+*  all of these components are found in TopLevelPanels (TODO: rename to AppBody)
+* 
+* 
+* One source of Truth (urls):
+*  All of the data for searching is stored in the URL, not local state.
+*  So that people can copy urls to searches or entries in the style guide
+*  It also simplifies code cuz truth comes from one source (hehe redux philosophy)
+*
+*  Since everything is in urls, we must encode all weird characters 
+*  https://www.w3schools.com/html/html_urlencode.asp
+* 
+*  When we fetch data from urls, we must decode the urls.
+
+TODO: do we need index.css
+TODO: make utils folder with URL stuff, keyboard shortcuts, etc
+*/
 
 function App() {
   const history = useHistory();
@@ -94,18 +89,14 @@ function App() {
   const quickLinks = useOnetimeAPIFetch(`${SERVER_URL}/sg/quick-links`, []);
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
 
+  // this feels like this could be in a loop
+  // but you can't use hooks inside a loop. So no.
+  useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
+  useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
 
-  useHotkeys('ctrl+k', (e) =>{ 
-    e.preventDefault()
-    setQuery('') 
-    queryInput.current.focus();
-  });
+  useHotkeys('ctrl+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQuery, queryInput));
+  useHotkeys('command+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQuery, queryInput));
 
-  useHotkeys('ctrl+l', (e) =>{ 
-    e.preventDefault()
-    queryInput.current.focus();
-  });
-  
 
   return (
     

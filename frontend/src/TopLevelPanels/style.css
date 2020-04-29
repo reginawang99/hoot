@@ -55,3 +55,26 @@
   padding-right: 5%;
 }
 
+.shortcuts-table {
+  border-collapse: collapse;
+  border: 1px solid #8EA0CF;
+}
+
+.shortcuts-table tr.header{
+  background: #8EA0CF;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.shortcuts-table th {
+  text-align: left;
+  color: white;
+
+}
+.shortcuts-table th, td {
+  padding: 7px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+} 
