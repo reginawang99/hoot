@@ -12,7 +12,7 @@
 *    Most of the time, this is the only thing you need to change.
 *      "keyboard+short+cut": function(e, setQuery, queryInput)
 *
-*    e = event object
+*    e = javascript document event object
 *    setQuery = function to set the current query string
 *    queryInput = React reference to query input tag
 * 
@@ -22,7 +22,7 @@
 *  Note: in order to use shift, use capital letters
 */
 export const KEYBOARD_SHORTCUTS = {
-	"ctrl+k": function(e, setQuery, queryInput){
+	"ctrl+k": function(e, setQuery, queryInput){ // feel free to add more parameters. Just make sure to change executeAllShortcuts and App.js
 		e.preventDefault(); // stops the browser's shortcut
 		setQuery('');       // clears the current query
 		if(queryInput)      // when this is called by the input tag, it is already in focus so no need to do the next line.
@@ -52,10 +52,11 @@ export const matchesShortcut = (e, shortcut) => {
 }
 
 export const executeAllShortcuts = (e, setQuery, queryInput) => {
-	for(let i = 0; i < Object.keys(KEYBOARD_SHORTCUTS).length; i++){
-		let shortcut = Object.keys(KEYBOARD_SHORTCUTS)[i];
+	// the key is the shortcut
+	// the value is the function
+	Object.keys(KEYBOARD_SHORTCUTS).map( (shortcut) => {
 		if(matchesShortcut(e, shortcut)){
 			KEYBOARD_SHORTCUTS[shortcut](e, setQuery, queryInput)
 		}
-	}
+	})
 }

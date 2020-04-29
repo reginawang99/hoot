@@ -14,7 +14,7 @@ import axios from 'axios';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useOnetimeAPIFetch } from './utils/api.js'
 import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from './utils/keyboardShortcuts.js'
-
+import {encoded_history_push} from './utils/urls.js'
 
 
 function search(history, query, currSection){
@@ -24,16 +24,19 @@ function search(history, query, currSection){
   else
     sectionString = currSection
 
-  query = encodeURIComponent(query)
-  sectionString = encodeURIComponent(sectionString);
-
-  history.push(`/search/${sectionString}/${query}`);
+  // Note: we cannot use `/${sectionString}/${query}`
+  // it does not encode url characters 
+  encoded_history_push(history, '/search/{sectionString}/{query}', {
+    sectionString: sectionString,
+    query: query 
+  })
 }
 
 // the following functions are curried
 // woah cs 131 EgErT
 
-function searchOnEnter (history, currSection, setQuery){ 
+function searchOnEnter (history, currSection, setQuery){
+  // returns a function which is a closure on history, currSection and setQuery 
   return (e) => {
     executeAllShortcuts(e, setQuery, null) //we won't pass it the <input> tag because its already focused
     if (e.key === 'Enter') {
@@ -90,7 +93,7 @@ function App() {
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
 
   // this feels like this could be in a loop
-  // but you can't use hooks inside a loop. So no.
+  // but you can't use hooks inside a loop. 
   useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
   useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
 

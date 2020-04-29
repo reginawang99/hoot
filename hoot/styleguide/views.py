@@ -13,7 +13,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets
 
 from itertools import chain
-from django.db.models import Q
 
 
 
@@ -148,9 +147,9 @@ def recommended_search_results(request):
 	
 	if section_obj: # if the passed a section
 		title_results = get_title_results(query, None)
-		append_querysets(accum, accum_set, trigram_results, title_results)
+		append_querysets(accum, accum_set, title_results)
 		body_results = get_content_results(query, None)
-		append_querysets(accum, accum_set, trigram_results, body_results)
+		append_querysets(accum, accum_set, body_results)
 		
 
 	serializer = StyleGuideEntrySerializer(accum, many=True)
