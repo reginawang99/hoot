@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 import { useParams } from 'react-router-dom';
 import { SERVER_URL } from '../config';
+import '../App.css';
 
 
 /**

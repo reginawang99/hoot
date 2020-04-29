@@ -105,6 +105,7 @@ function App() {
     
         <div className="App">
           <div className="header">
+            <a className="help-button" href="/"> <img  src="/helpbutton.svg"/> </a>
             <a href="/" className="header-text">DAILY BRUIN STYLE GUIDE</a>
             <div className="header-search-input-button-div">
               <input 
@@ -115,7 +116,7 @@ function App() {
                 value={query} 
                 onChange={(e) => setQuery(e.target.value)} 
                 onKeyDown={searchOnEnter(history, currSection, setQuery)}/>
-              <button className="header-search-button" onClick={() => search(history, query, currSection)}><img src="/Mask.svg"/></button>
+              <button className="header-search-button" onClick={() => search(history, query, currSection)}><img src="/searchbutton.svg"/></button>
             </div>
           </div>
           <div className="caw-body">

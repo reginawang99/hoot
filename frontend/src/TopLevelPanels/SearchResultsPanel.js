@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './style.css';
+import '../App.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import SearchResult from '../SearchResult';
