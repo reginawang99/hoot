@@ -106,14 +106,22 @@ def search(request):
 	section = request.GET.get("section", None)
 	section_obj = None
 
-	if query is None or query == "":
-		return Response("Must provide query", status=400)
-
 	# sections optionally filters by section name. 
 	if section is not None:
 		section_obj = Section.objects.filter(name=section).first()
 		if section_obj is None:
 			return Response("Invalid section '" + section + "'", status=400)
+
+	if query is None or query == "":
+		# this means that they want all results
+		results = []
+		if section:
+			results = StyleGuideEntry.objects.filter(section=section_obj)
+		else:
+			results = StyleGuideEntry.objects.all()
+		serializer = StyleGuideEntrySerializer(results, many=True)
+		return Response(serializer.data)
+
 
 	
 	title_results = get_title_results(query, section_obj)
@@ -175,6 +183,7 @@ def get_all_guides(request):
 @api_view(http_method_names=['GET'])
 def get_single_entry(request, name):
 	obj = StyleGuideEntry.objects.filter(title=name)
+	print(name)
 	if len(obj) != 1:
 		return Response(status=404)
 	serializer = StyleGuideEntrySerializer(obj[0])

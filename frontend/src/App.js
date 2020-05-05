@@ -4,8 +4,7 @@ import { Route, Link, useHistory, useParams} from 'react-router-dom';
 
 import './App.css';
 import {LinkPanel, FunctionPanel} from './Panel/LinkPanel';
-import Welcome from './TopLevelPanels/Welcome'
-import SectionHome from './TopLevelPanels/SectionHome'
+import Help from './TopLevelPanels/Help'
 import SearchResultsPanel from './TopLevelPanels/SearchResultsPanel';
 import SingleEntryView from './TopLevelPanels/SingleEntryView';
 import { SERVER_URL } from './config';
@@ -121,10 +120,10 @@ function App() {
           </div>
           <div className="caw-body">
             <div className="search-result-container">
-
+              <Route exact path="/" component={SearchResultsPanel} />
               <Route exact path="/entry/:entryName" component={SingleEntryView} />
-              <Route exact path="/" component={Welcome} />
-              <Route exact path="/search/:section" component={SectionHome} />
+              <Route exact path="/help" component={Help} />
+              <Route exact path="/search/:section" component={SearchResultsPanel} />
               <Route exact path="/search/:section/:query" component={SearchResultsPanel} />
 
             </div>

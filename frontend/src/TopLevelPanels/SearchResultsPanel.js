@@ -15,11 +15,12 @@ function results_string(results){
 }
 
 /**
-* props = {
-  header: header,
-  body: [
-     {text: "asdf", link: "http://link.com"}
-  ]
+* Ok this is going to be a complicated component
+* If a query and a section is provided, it will search using those two
+   Note: section = "all" => all sections
+* If no query is provided, then it will show all results for the given section
+* if no query and no section is provided, then it will show ALL entries
+
 }
 */
 function SearchResultsPanel() {
@@ -29,22 +30,25 @@ function SearchResultsPanel() {
 
   const [searchResults, setSearchResults] = useState(null);
   const [recommendedResults, setRecommenedResults] = useState(null);
-  const isSearchingAll = decoded_section === "all";
+  const isSearchingAll = decoded_section === "all" || section === undefined;
 
   useEffect(() => {
     setSearchResults(null)
     setRecommenedResults(null)
 
-    let searchParams = {
-        query: decoded_query,
-    };
+    let searchParams = {};
+    if(query !== undefined)
+      searchParams['query'] = decoded_query
     if(!isSearchingAll)
       searchParams["section"] = decoded_section
 
     axios.get(`${SERVER_URL}/sg/search/`, {
       params: searchParams
     }).then((response) => {
-        const modData = response.data.map((x) => ({ ...x, contentSummary: x.content }));
+        const modData = response.data.map((x) => ({ 
+          ...x, 
+          contentSummary: x.content 
+        }));
         setSearchResults(modData);
         // the recommended search will execute after the normal search
         // this is because this query is more intense

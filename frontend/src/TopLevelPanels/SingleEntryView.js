@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown/with-html';
 
 import { useParams } from 'react-router-dom';
 import { SERVER_URL } from '../config';
@@ -49,7 +49,7 @@ function SingleEntryView() {
         {entry.title}
       </div>
       <div className="search-result-results">
-          <ReactMarkdown source={entry.content} />
+          <ReactMarkdown escapeHtml={false} source={entry.content} />
       </div>
     </div>
   );
