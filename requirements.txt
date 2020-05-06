@@ -30,3 +30,4 @@ social-auth-core==3.2.0
 soupsieve==2.0
 sqlparse==0.3.0
 urllib3==1.25.8
+django-taggit==1.2.0
