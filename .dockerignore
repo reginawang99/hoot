@@ -1,8 +1,7 @@
+ 
 celerybeat.pid
 
 *.log
-meow.log
-meow/meow.log
 .env
 .gitignore
 .editorconfig
@@ -23,8 +22,7 @@ node_modules/
 .git/
 coverage/
 
-meow/frontend/bundles/
-static/
+django_static/
 
 stats.json
 webpack-stats.json

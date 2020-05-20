@@ -25,6 +25,9 @@ coverage
 
 # production
 /build
+django_static
+media
+
 
 # misc
 .DS_Store

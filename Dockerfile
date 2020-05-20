@@ -1,23 +1,25 @@
-# Slightly modified from
-# https://www.caktusgroup.com/blog/2017/03/14/production-ready-dockerfile-your-python-django-app/
-#FROM python:3.6-alpine
-FROM python:3.6
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+FROM python
 
-WORKDIR /code
+RUN pip install uwsgi
+RUN pip install gunicorn
+RUN pip install Django
 
-# I'm not sure what these are for tbh but yeah
-RUN apt-get update && apt-get install -y curl \
-  build-essential \
-  libpq-dev
+RUN apt-get update
+RUN apt-get install -y nginx
+ADD nginx.conf /etc/nginx/nginx.conf
+ADD nginx.default /etc/nginx/conf.d/default.conf
 
-ADD requirements.txt /code
-RUN pip install -U -r requirements.txt
+ADD requirements.txt /var/www
 
-ADD . /code/
+#Remove the line below if non-production
+#ADD . /var/www
 
-EXPOSE 5000
+RUN pip install -U -r /var/www/requirements.txt
 
-ENTRYPOINT ["./start.sh"]
+#set shared directory to working directory
+WORKDIR /var/www
 
+
+
+ENTRYPOINT ["/var/www/entrypoint.sh"]
+CMD ["nginx"]

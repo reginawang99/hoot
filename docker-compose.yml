@@ -1,22 +1,21 @@
 version: "3"
-
 services:
-  web:
-    build: .
-    image: hoot
-    # later on, the command will be the commented one
-    # only issue now is that gunicorn can easily be ddos-ed so we have to put it behind nginx
-    # and nginx should be the one serving static files.
-    #command: gunicorn --bind 0.0.0.0:5000 --pythonpath hoot hoot.wsgi --log-file -
-    command: python hoot/manage.py runserver 0.0.0.0:5000 
+  nginx:
+    image: nginxhoot:latest
+    container_name: nginxhoot
+    restart: always
+    volumes:
+      - ./:/var/www/
     ports:
-      - "5000:5000"
+      - "8000:80"
     env_file: .env
     depends_on:
       - db
-    # by making the working directory (see Dockerfile) a volume, when we update our file system's copy, it updates the docker container's
-    # I think - Neil
-    volumes:
-      - .:/code 
+    build:
+      context: .
+  
   db:
     image: postgres:latest
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  
