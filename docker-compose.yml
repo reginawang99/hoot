@@ -3,7 +3,6 @@ services:
   nginx:
     image: nginxhoot:latest
     container_name: nginxhoot
-    restart: always
     volumes:
       - ./:/var/www/
     ports:
