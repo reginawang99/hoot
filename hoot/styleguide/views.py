@@ -74,7 +74,7 @@ def get_title_results(query, section_obj=None):
 def get_content_results(query, section_obj=None):
 	filter_keyword_args = {}
 	if section_obj:
-		filter_keyword_args["section"] = section_obj
+		filter_keyword_args["sections"] = section_obj
 
 	return StyleGuideEntry.objects.filter(**filter_keyword_args).filter(content__search=query)
 
@@ -116,7 +116,7 @@ def search(request):
 		# this means that they want all results
 		results = []
 		if section:
-			results = StyleGuideEntry.objects.filter(section=section_obj)
+			results = StyleGuideEntry.objects.filter(sections=section_obj)
 		else:
 			results = StyleGuideEntry.objects.all()
 		serializer = StyleGuideEntrySerializer(results, many=True)

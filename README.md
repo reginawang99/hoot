@@ -29,6 +29,7 @@
 ## Small things
 1. Improve docker file
 2. add .dockerignore
+1. Change filter(section=Value) to filter(sections__contains=value)
 1. Add caching for search queries
 	All caches will be invalidate upon any StyleGuideEntry update
 3. add deploy script
@@ -43,3 +44,14 @@
 1. Massive housekeeping of App.js ✓
   1. Keyboard shortcuts have 2 places of duplicate code
   1. put helper functions outside
+
+1. weird bug
+db_1   | 2020-05-21 08:14:04.106 UTC [63] DETAIL:  Key (slug)=(santa-monica) already exists.
+db_1   | 2020-05-21 08:14:04.106 UTC [63] STATEMENT:  INSERT INTO "taggit_tag" ("name", "slug") VALUES ('Santa monica', 'santa-monica') RETURNING "taggit_tag"."id"
+db_1   | 2020-05-21 08:14:05.420 UTC [63] ERROR:  duplicate key value violates unique constraint "taggit_tag_slug_key"
+db_1   | 2020-05-21 08:14:05.420 UTC [63] DETAIL:  Key (slug)=(ncaa) already exists.
+db_1   | 2020-05-21 08:14:05.420 UTC [63] STATEMENT:  INSERT INTO "taggit_tag" ("name", "slug") VALUES ('ncaa', 'ncaa') RETURNING "taggit_tag"."id"
+db_1   | 2020-05-21 08:14:08.756 UTC [63] ERROR:  duplicate key value violates unique constraint "taggit_tag_slug_key"
+db_1   | 2020-05-21 08:14:08.756 UTC [63] DETAIL:  Key (slug)=(usac) already exists.
+db_1   | 2020-05-21 08:14:08.756 UTC [63] STATEMENT:  INSERT INTO "taggit_tag" ("name", "slug") VALUES ('USAC', 'usac') RETURNING "taggit_tag"."id"
+
