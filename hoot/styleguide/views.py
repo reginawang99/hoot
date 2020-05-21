@@ -80,13 +80,13 @@ def get_content_results(query, section_obj=None):
 
 def get_tag_results(query):
 	trigram_annotated_qs = StyleGuideEntry.objects.annotate(
-		similarity=TrigramSimilarity('tags__text', query),
+		similarity=TrigramSimilarity('tags__name', query),
 	)
 
 	trigram_results = trigram_annotated_qs.filter(similarity__gt=0.6)
 	# since trigrams are bad at startswith queries when query is much smaller than field
 	# possible add icontains
-	starts_with_results = StyleGuideEntry.objects.filter(tags__text__istartswith=query)
+	starts_with_results = StyleGuideEntry.objects.filter(tags__name__istartswith=query)
 
 	accum = []
 	accum_set = set()

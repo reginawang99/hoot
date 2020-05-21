@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from tags.models import Tag
+from taggit.managers import TaggableManager
 
 # markdown field
 from markdownx.models import MarkdownxField
@@ -14,7 +14,7 @@ class Section(models.Model):
 		return self.name
 
 class StyleGuideEntry(models.Model):
-	tags = models.ManyToManyField(Tag, db_index=True) #can we index this? I guess we can
+	tags = TaggableManager() #can we index this? I guess we can
 	title = models.CharField(max_length=75, db_index=True) # definitely index this because we will search a looot
 	content = MarkdownxField(blank=True)
 	section = models.ManyToManyField(Section, blank=True, db_index=True)

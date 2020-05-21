@@ -18,22 +18,28 @@
 3. Keyboard shortcuts (focus search, clear search) ✓
 4. nginx deployment strategy ✓
 1. Embedding pdfs and colors ✓
-1. Make section home show all entries for section
-1. Make homepage show all entries
+1. Make section home show all entries for section ✓
+1. Make homepage show all entries ✓
 1. Why is "10 Questions" not working (turns out django doesn't like escaped ampersands)
+1. convert csv import into custom django manage.py command
+	Make it use the models directly instead of fixtures
 1. Logging
 1. logging stats
 
 ## Small things
 1. Improve docker file
 2. add .dockerignore
+1. Add caching for search queries
+	All caches will be invalidate upon any StyleGuideEntry update
 3. add deploy script
 4. Search bar + search button style ✓
 3. Sometimes "Loading.." does not show up ✓
 1. When you have something searched and you switch sections, it doesn't re issue a query ✓
 1. When you paste a link into the browser with a query, it doesn't fill in the search text field with the query from the url
+1. Sometimes markdown that markdownx uses is different behavior than react does.
+	ex: #title does not render as title in frontend but does in backend
 1. Clear section filtering 
 1. Don't have 2 sources of truth for section (url and useState in App.js)
-1. Massive housekeeping of App.js:
+1. Massive housekeeping of App.js ✓
   1. Keyboard shortcuts have 2 places of duplicate code
   1. put helper functions outside

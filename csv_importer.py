@@ -8,6 +8,7 @@ import sys
 import json
 import re
 from markdownify import markdownify as md
+from hoot.styleguide.models import *
 
 styleguideentry_pk = 1
 

@@ -60,13 +60,14 @@ INSTALLED_APPS = [
 
     # our own apps
     "styleguide",
-    "tags",
+
 
     # dependencies
     'corsheaders',
     'rest_framework', # REST API Utils
     'markdownx',      # Markdown editor ()
-    'django.contrib.postgres' # enable trigram search
+    'django.contrib.postgres', # enable trigram search
+    "taggit"          # tags
 ]
 
 MIDDLEWARE = [

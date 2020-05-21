@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-from tags.models import Tag
+
 
 class SectionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,17 +19,11 @@ class QuickLinkSerializer(serializers.ModelSerializer):
 
 class StyleGuideEntrySerializer(serializers.ModelSerializer):
     section = SectionSerializer(many=True, required=False)
-    tags = serializers.SlugRelatedField(
-        many=True,
-        slug_field='text',
-        queryset=Tag.objects.all(),
-        required=False
-     )
 
 
     class Meta:
         model = StyleGuideEntry
-        fields = ('title', 'content', 'created_at', 'updated_at', 'tags', 'section')
+        fields = ('title', 'content', 'created_at', 'updated_at', 'section')
 
 
 
