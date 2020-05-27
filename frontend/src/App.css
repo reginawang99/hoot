@@ -2,6 +2,11 @@ body {
   background: #FFFFFF;
 }
 
+/*For markdown pre tags*/
+pre{
+  white-space:pre-wrap
+}
+
 .header {
   background: linear-gradient(180deg, #7395ED 0%, #DBE5FF 100%);
   align-items: center;

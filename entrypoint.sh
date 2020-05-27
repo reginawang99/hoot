@@ -5,7 +5,6 @@ python wait_for_postgres.py
 
 ./hoot/manage.py collectstatic --noinput
 ./hoot/manage.py migrate
-./hoot/manage.py loaddata spreadsheet_data_fixture.json
 echo "Collected, migrated and loaded."
 
 echo "Starting django project."
