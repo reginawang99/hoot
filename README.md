@@ -1,11 +1,16 @@
 ## Quick start
 1. `git clone `
 1. `docker-compose build`
+1. Create this env file:
+```
+DATABASE_URL=postgres://postgres@db:5432/postgres
+SECRET_KEY=putyourfavoritesonglyrichere
+DEBUG=True
+```
 1. `docker-compose up`
 1. Open another terminal window.
-1. `docker-compose run web python hoot/manage.py loaddata spreadsheet_data_fixture.json` 
-	Note: if this command fails, this could be the model's fields have updated since the json
-	has been generated. 
+1. `docker-compose run web ./hoot/manage.py csv_import Style\ Guide\ Entries\ -\ Entries.csv`
+ 
 1. `cd frontend`
 1. `npm install`
 1. `npm start`
@@ -18,15 +23,20 @@
 3. Keyboard shortcuts (focus search, clear search) ✓
 4. nginx deployment strategy ✓
 1. Embedding pdfs and colors ✓
-1. Make section home show all entries for section
-1. Make homepage show all entries
+1. Make section home show all entries for section ✓
+1. Make homepage show all entries ✓
 1. Why is "10 Questions" not working (turns out django doesn't like escaped ampersands)
+1. There were duplicates in the spread sheet feels bad man
+1. Don't send request for recommended results when on section homepage
+1. Don't send request for sections, quick links and such every time we search.
+1. Fix everything in views to use "sections" not section
 1. Logging
 1. logging stats
+1. Caching?
 
 ## Small things
 1. Improve docker file
-2. add .dockerignore
+2. add .dockerignore ✓
 3. add deploy script
 4. Search bar + search button style ✓
 3. Sometimes "Loading.." does not show up ✓
