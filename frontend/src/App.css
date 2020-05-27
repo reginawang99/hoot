@@ -116,9 +116,8 @@ body {
 }
 
 .search-result-results {
-  padding-left: 20px;
+  padding: 20px;
   padding-top: 10px;
-  padding-bottom: 20px;
   border: 1px solid #8EA0CF;
   border-top: 0;
 }

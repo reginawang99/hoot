@@ -104,7 +104,7 @@ function App() {
     
         <div className="App">
           <div className="header">
-            <a className="help-button" href="/"> <img  src="/helpbutton.svg"/> </a>
+            <a className="help-button" href="/help"> <img  src="/helpbutton.svg"/> </a>
             <a href="/" className="header-text">DAILY BRUIN STYLE GUIDE</a>
             <div className="header-search-input-button-div">
               <input 

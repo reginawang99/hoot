@@ -52,8 +52,9 @@ function Help() {
         </p>
         <h4> Embedding PDFS </h4>
         <ol>
-          <li> Upload PDF to google drive </li>
-          <li> Make sure Link Sharing is enable </li>
+          <li> Upload the PDF to Google Drive </li>
+          <li> Make sure Link Sharing is enabled </li>
+          <li> Click on the PDF </li>
           <li> Click the ... in the top right and click embed </li>
           <li> 
             Copy paste the &lt;iframe stuff. It should look something like this
@@ -63,13 +64,18 @@ function Help() {
              </span>
             </p>
           </li>
-          <li> Paste that in the 'content' text area for a style guide entry! </li>
+          <li> Paste that in the style guide entry in the <a href="hoot.dailybruin.com/django/admin/">admin</a> side. </li>
         </ol>
         <h4> Images </h4>
-        <p> Simply drag and drop the image into the content text area. It will uinsert the markdown for embeding the image and upload it for you. </p>
+        <p> Simply drag and drop the image into the content text area. It will insert the markdown for embeding the image and upload it for you. </p>
         <h4> Colors </h4>
         <p> Try copy pasting this blue coloring snippet: <span className="monospaced"> &lt;span style=&quot;color:blue&quot;&gt;some blue text&lt;/span&gt; </span> </p>
         <p> You can also use hex colors: <span className="monospaced">&lt;span style=&quot;color:#7FFFD4&quot;&gt;some aqua text&lt;/span&gt; </span> </p>
+
+        <h4> HTML </h4>
+        <p> You can embed any HTML into style guide entries. Just be cautious when copying HTML as 
+        some of it such as <span className="monospaced">&lt;script&gt;</span> tags can be 
+        <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">dangerous</a>  </p>
 
         <h3> Bugs </h3>
         <p> 
