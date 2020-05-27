@@ -158,13 +158,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+FORCE_SCRIPT_NAME = '/hoot'
+MARKDOWNX_URLS_PATH = '/hoot/markdownx/markdownify/'
+MARKDOWNX_UPLOAD_URLS_PATH = '/hoot/markdownx/upload/'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/django_static/'
+STATIC_ROOT = os.path.abspath('/var/www/django_static/')
 
 # uploaded
 MEDIA_URL = '/media/'
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.abspath('/var/www/media')
 
 
 # Django Rest framework
@@ -175,3 +178,65 @@ DEFAULT_PERMISSION_CLASSES = [
 
 # markdownx https://neutronx.github.io/django-markdownx/customization/
 MARKDOWNX_MEDIA_PATH = datetime.now().strftime('markdownx/%Y/%m/%d')
+
+
+
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'simple_server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(asctime)s|%(levelname)s] %(message)s',
+        },
+
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'logfile': {
+            'level':'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.abspath('/var/www/logs/hoot.log'), #error logs go into logs folder
+            'maxBytes': 1024*1024*3, # 3MB
+            'formatter': 'simple_server'
+        },
+        # this handler makes errors show up in rancher's console
+        'console_debug_false': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'logging.StreamHandler'
+        },
+    },
+    'loggers': {
+        'styleguide': {
+            'handlers': ['console', 'console_debug_false', 'logfile'],
+            'level': 'INFO',
+        },
+        'user_profile': {
+            'handlers': ['console', 'console_debug_false', 'logfile'],
+            'level': 'INFO',
+        },
+    }
+}
+
+# Usage:
+# logger = logging.getLogger('oauth')
+# logger.error(traceback.format_exc()) or logger.info("")
