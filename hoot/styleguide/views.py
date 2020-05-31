@@ -14,6 +14,11 @@ from rest_framework import viewsets
 from django.http import FileResponse
 
 from itertools import chain
+from datetime import datetime
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 
@@ -113,6 +118,7 @@ return a json object containing all the search results, not paginated
 """
 @api_view(http_method_names=['GET'])
 def search(request):
+	startTime = datetime.now()
 	query = request.GET.get("query", None)
 	section = request.GET.get("section", None)
 
@@ -135,6 +141,8 @@ def search(request):
 		else:
 			results = StyleGuideEntry.objects.all()
 		serializer = StyleGuideEntrySerializer(results, many=True)
+
+		logger.info(f"SEARCH {query} {section} in " + str(datetime.now() - startTime))
 		return Response(serializer.data)
 
 
@@ -144,10 +152,14 @@ def search(request):
 
 
 	serializer = StyleGuideEntrySerializer(accum.data(), many=True)
+
+	logger.info(f"SEARCH {query} {section} in " + str(datetime.now() - startTime))
 	return Response(serializer.data)
 
 @api_view(http_method_names=['GET'])
 def recommended_search_results(request):
+	startTime = datetime.now()
+
 	query = request.GET.get("query", None)
 	section = request.GET.get("section", None)
 	section_obj = None
@@ -170,6 +182,8 @@ def recommended_search_results(request):
 		
 
 	serializer = StyleGuideEntrySerializer(accum.data(), many=True)
+
+	logger.info(f"RECOMMENDED SEARCH {query} {section} in " + str(datetime.now() - startTime))
 	return Response(serializer.data)
 
 

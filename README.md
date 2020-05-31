@@ -16,7 +16,10 @@ DEBUG=True
 1. `npm start`
 1. go to `localhost:3000` in web browser
 
-#
+## Plan
+1. Solve dups problem  ✓
+1. Log stats
+2. caching on main page
 
 
 ## notes for neil
