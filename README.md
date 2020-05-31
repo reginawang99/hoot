@@ -9,12 +9,15 @@ DEBUG=True
 ```
 1. `docker-compose up`
 1. Open another terminal window.
-1. `docker-compose run web ./hoot/manage.py csv_import Style\ Guide\ Entries\ -\ Entries.csv`
+1. `docker-compose run nginx ./hoot/manage.py loaddata get_fixture.json `
  
 1. `cd frontend`
 1. `npm install`
 1. `npm start`
 1. go to `localhost:3000` in web browser
+
+#
+
 
 ## notes for neil
 1. Fix data from spreadsheets function   ✓

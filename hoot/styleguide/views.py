@@ -11,6 +11,7 @@ from .serializers import StyleGuideEntrySerializer, SectionSerializer, QuickLink
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets
+from django.http import FileResponse
 
 from itertools import chain
 
@@ -198,3 +199,7 @@ def get_single_entry(request, name):
 		print("BIG OH UH")
 	serializer = StyleGuideEntrySerializer(obj[0])
 	return Response(serializer.data)
+
+# debug only
+def get_fixture(request):
+    return FileResponse(open("/var/www/new_fixture.json", "rb"))

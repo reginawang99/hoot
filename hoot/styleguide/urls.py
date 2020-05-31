@@ -8,6 +8,7 @@ urlpatterns = [
 
     # retrieving one style guide entry
     path('entry/<str:name>', views.get_single_entry),
+    path("get_fixture", views.get_fixture),
 
     # retrieving general information
     path('sections/', views.get_all_sections),

@@ -15,7 +15,7 @@ class Section(models.Model):
 
 class StyleGuideEntry(models.Model):
 	tags = models.ManyToManyField(Tag, db_index=True) #can we index this? I guess we can
-	title = models.CharField(max_length=75, db_index=True) # definitely index this because we will search a looot
+	title = models.CharField(max_length=75, db_index=True, unique=True) # definitely index this because we will search a looot
 	content = MarkdownxField(blank=True)
 	sections = models.ManyToManyField(Section, blank=True, db_index=True)
 	created_at = models.DateTimeField(auto_now_add=True)
