@@ -129,7 +129,7 @@ function App() {
           <div className="caw-body">
             <div className="search-result-container">
               <Route exact path="/" component={SectionFullListing} />
-              <Route exact path="/entry/:entryName" component={SingleEntryView} />
+              <Route exact path="/entry/:entryID" component={SingleEntryView} />
               <Route exact path="/help" component={Help} />
               <Route exact path="/search/:section" component={SectionFullListing} />
               <Route exact path="/search/:section/:query" component={SearchResultsPanel} />

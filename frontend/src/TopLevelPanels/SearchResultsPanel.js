@@ -16,32 +16,22 @@ function results_string(results){
 }
 
 /**
-* Ok this is going to be a complicated component
-* If a query and a section is provided, it will search using those two
-   Note: section = "all" => all sections
-* If no query is provided, then it will show all results for the given section
-* if no query and no section is provided, then it will show ALL entries
 
-}
 */
-function SearchResultsPanel() {
-  const { query, section } = useParams();
-  const decoded_query = decodeURIComponent(query)
-  const decoded_section = decodeURIComponent(section)
-
+const MemoizedSearchResultPanel = React.memo( props => {
   const [searchResults, setSearchResults] = useState(null);
   const [recommendedResults, setRecommenedResults] = useState(null);
-  const isSearchingAll = decoded_section === "all" || section === undefined;
+  const isSearchingAll = props.decoded_section === "all" || props.decoded_section === null;
 
   useEffect(() => {
     setSearchResults(null)
     setRecommenedResults(null)
 
     let searchParams = {};
-    if(query !== undefined)
-      searchParams['query'] = decoded_query
+    if(props.decoded_query !== null)
+      searchParams['query'] = props.decoded_query
     if(!isSearchingAll)
-      searchParams["section"] = decoded_section
+      searchParams["section"] = props.decoded_section
 
     axios.get(`${SERVER_URL}/sg/search/`, {
       params: searchParams
@@ -58,7 +48,7 @@ function SearchResultsPanel() {
 
         })
     });
-  }, [decoded_query, decoded_section, isSearchingAll]);
+  }, [props.decoded_query, props.decoded_section, isSearchingAll]);
 
   if (searchResults === null) return <p> Loading ... </p>;
 
@@ -68,7 +58,7 @@ function SearchResultsPanel() {
   if(isSearchingAll)
     searchResultHeaderString = searchResults ? `SEARCH (${results_string(searchResults)})` : '';
   else
-    searchResultHeaderString = decoded_section + `  (${results_string(searchResults)})`
+    searchResultHeaderString = props.decoded_section + `  (${results_string(searchResults)})`
 
   return (
     <div className="search-result-body">
@@ -93,6 +83,17 @@ function SearchResultsPanel() {
       </div>
     </div>
   );
+})
+
+
+function SearchResultsPanel() {
+  const { query, section } = useParams();
+  const decoded_query = query? decodeURIComponent(query): null
+  const decoded_section = section? decodeURIComponent(section): null
+
+
+  return <MemoizedSearchResultPanel decoded_query={decoded_query} decoded_section={decoded_section} />
+  
 }
 
 export default SearchResultsPanel;

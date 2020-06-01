@@ -8,13 +8,9 @@ import { SERVER_URL } from '../config';
 import addContentSummary from '../utils/contentSummary'
 
 
-
-function SectionFullListing() {
-  const { query, section } = useParams();
-  const decoded_section = section? decodeURIComponent(section): undefined;
-
+const MemoizedSectionFullListing = React.memo( props => {
   const [entries, setEntries] = useState([]);
-  const isSearchingAll = decoded_section === "all" || section === undefined;
+  const isSearchingAll = props.decoded_section === "all" || props.decoded_section === null;
 
 
   useEffect(() => {
@@ -22,27 +18,27 @@ function SectionFullListing() {
 
     let searchParams = {};
     if(!isSearchingAll)
-      searchParams["section"] = decoded_section
+      searchParams["section"] = props.decoded_section
 
-  	// so this is paginated 
-  	// so we will need to use recursion and keep checking if theres a next page
-  	// we are keeping an accumulator because even if we call setEntries
-  	let get_pages = (url, accum) => {
-	    axios.get(url, {
-	      params: searchParams
-	    }).then((response) => {
-	    	const {results, next} = response.data;
-	    	accum = accum.concat(results.map(addContentSummary))
-	    	setEntries(accum) 
-	    	if (next !== null) {
-	    		get_pages(next, accum);
-	    	}
-	    });
-		
-	}
+    // so this is paginated 
+    // so we will need to use recursion and keep checking if theres a next page
+    // we are keeping an accumulator because even if we call setEntries
+    let get_pages = (url, accum) => {
+      axios.get(url, {
+        params: searchParams
+      }).then((response) => {
+        const {results, next} = response.data;
+        accum = accum.concat(results.map(addContentSummary))
+        setEntries(accum) 
+        if (next !== null) {
+          get_pages(next, accum);
+        }
+      });
+    
+  }
 
-	get_pages(`${SERVER_URL}/sg/entries/`, [])
-  }, [decoded_section, isSearchingAll]);
+  get_pages(`${SERVER_URL}/sg/entries/`, [])
+  }, [props.decoded_section, isSearchingAll]);
 
 
  
@@ -50,18 +46,25 @@ function SectionFullListing() {
     <div className="search-result-body">
 
       <div className="search-result-header">
-        {section? decoded_section: "All"}
+        {props.decoded_section? props.decoded_section: "All"}
       </div>
 
       <div className="search-result-results">
         {
-        	// since the titles are unique, we can use it as a key
-        	entries.map((x) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
+          // since the titles are unique, we can use it as a key
+          entries.map((x) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
         }
       </div>
     </div>
   );
+})
 
+
+function SectionFullListing() {
+  const { query, section } = useParams();
+  const decoded_section = section? decodeURIComponent(section): null;
+
+  return <MemoizedSectionFullListing decoded_section={section}/>
 }
 
 export default SectionFullListing;
