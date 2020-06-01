@@ -15,23 +15,26 @@ function results_string(results){
   return `${results.length} RESULTS`
 }
 
-/**
 
-*/
-const MemoizedSearchResultPanel = React.memo( props => {
+
+function SearchResultsPanel() {
+  const { query, section } = useParams();
+  const decoded_query = query? decodeURIComponent(query): null
+  const decoded_section = section? decodeURIComponent(section): null
+
   const [searchResults, setSearchResults] = useState(null);
   const [recommendedResults, setRecommenedResults] = useState(null);
-  const isSearchingAll = props.decoded_section === "all" || props.decoded_section === null;
+  const isSearchingAll = decoded_section === "all" || decoded_section === null;
 
   useEffect(() => {
     setSearchResults(null)
     setRecommenedResults(null)
 
     let searchParams = {};
-    if(props.decoded_query !== null)
-      searchParams['query'] = props.decoded_query
+    if(decoded_query !== null)
+      searchParams['query'] = decoded_query
     if(!isSearchingAll)
-      searchParams["section"] = props.decoded_section
+      searchParams["section"] = decoded_section
 
     axios.get(`${SERVER_URL}/sg/search/`, {
       params: searchParams
@@ -48,7 +51,7 @@ const MemoizedSearchResultPanel = React.memo( props => {
 
         })
     });
-  }, [props.decoded_query, props.decoded_section, isSearchingAll]);
+  }, [decoded_query, decoded_section, isSearchingAll]);
 
   if (searchResults === null) return <p> Loading ... </p>;
 
@@ -58,7 +61,7 @@ const MemoizedSearchResultPanel = React.memo( props => {
   if(isSearchingAll)
     searchResultHeaderString = searchResults ? `SEARCH (${results_string(searchResults)})` : '';
   else
-    searchResultHeaderString = props.decoded_section + `  (${results_string(searchResults)})`
+    searchResultHeaderString = decoded_section + `  (${results_string(searchResults)})`
 
   return (
     <div className="search-result-body">
@@ -83,16 +86,6 @@ const MemoizedSearchResultPanel = React.memo( props => {
       </div>
     </div>
   );
-})
-
-
-function SearchResultsPanel() {
-  const { query, section } = useParams();
-  const decoded_query = query? decodeURIComponent(query): null
-  const decoded_section = section? decodeURIComponent(section): null
-
-
-  return <MemoizedSearchResultPanel decoded_query={decoded_query} decoded_section={decoded_section} />
   
 }
 

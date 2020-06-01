@@ -8,9 +8,12 @@ import { SERVER_URL } from '../config';
 import addContentSummary from '../utils/contentSummary'
 
 
-const MemoizedSectionFullListing = React.memo( props => {
+function SectionFullListing() {
+  const { query, section } = useParams();
+  const decoded_section = section? decodeURIComponent(section): null;
+
   const [entries, setEntries] = useState([]);
-  const isSearchingAll = props.decoded_section === "all" || props.decoded_section === null;
+  const isSearchingAll = decoded_section === "all" || decoded_section === null;
 
 
   useEffect(() => {
@@ -18,7 +21,7 @@ const MemoizedSectionFullListing = React.memo( props => {
 
     let searchParams = {};
     if(!isSearchingAll)
-      searchParams["section"] = props.decoded_section
+      searchParams["section"] = decoded_section
 
     // so this is paginated 
     // so we will need to use recursion and keep checking if theres a next page
@@ -31,14 +34,14 @@ const MemoizedSectionFullListing = React.memo( props => {
         accum = accum.concat(results.map(addContentSummary))
         setEntries(accum) 
         if (next !== null) {
-          get_pages(next, accum);
+          setTimeout(() => get_pages(next, accum));
         }
       });
     
   }
 
   get_pages(`${SERVER_URL}/sg/entries/`, [])
-  }, [props.decoded_section, isSearchingAll]);
+  }, [decoded_section, isSearchingAll]);
 
 
  
@@ -46,7 +49,7 @@ const MemoizedSectionFullListing = React.memo( props => {
     <div className="search-result-body">
 
       <div className="search-result-header">
-        {props.decoded_section? props.decoded_section: "All"}
+        {decoded_section? decoded_section: "All"}
       </div>
 
       <div className="search-result-results">
@@ -57,14 +60,6 @@ const MemoizedSectionFullListing = React.memo( props => {
       </div>
     </div>
   );
-})
-
-
-function SectionFullListing() {
-  const { query, section } = useParams();
-  const decoded_section = section? decodeURIComponent(section): null;
-
-  return <MemoizedSectionFullListing decoded_section={section}/>
 }
 
 export default SectionFullListing;

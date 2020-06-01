@@ -5,6 +5,8 @@ import { Route, Link, useHistory, useParams} from 'react-router-dom';
 import './App.css';
 import {LinkPanel, FunctionPanel} from './Panel/LinkPanel';
 import Help from './TopLevelPanels/Help'
+import Header from "./Header"
+import Sidebar from "./Sidebar"
 import SearchResultsPanel from './TopLevelPanels/SearchResultsPanel';
 import SingleEntryView from './TopLevelPanels/SingleEntryView';
 import SectionFullListing from "./TopLevelPanels/SectionFullListing"
@@ -17,37 +19,9 @@ import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from './utils/keyboardShortcu
 import {encoded_history_push} from './utils/urls.js'
 
 
-function search(history, query, currSection){
-  let sectionString;
-  if(currSection === null)
-    sectionString = "all";
-  else
-    sectionString = currSection
-
-  // Note: we cannot use `/${sectionString}/${query}`
-  // it does not encode url characters 
-  encoded_history_push(history, '/search/{sectionString}/{query}', {
-    sectionString: sectionString,
-    query: query 
-  })
-}
-
-// the following functions are curried
-// woah cs 131 EgErT
-
-function searchOnEnter (history, currSection, setQuery){
-  // returns a function which is a closure on history, currSection and setQuery 
-  return (e) => {
-    executeAllShortcuts(e, setQuery, null) //we won't pass it the <input> tag because its already focused
-    if (e.key === 'Enter') {
-      const newQuery = e.target.value;
-      search(history, newQuery, currSection)
-    }
-  }
-}
 
 
-function onSectionPanelClick (setCurrSection, history, query){
+function onSectionPanelClick (setCurrSection){
   return (x) => { // x is passed by FunctionPanel. its an array of what has been selected
     let newSection;
     if(x.length === 0){
@@ -58,7 +32,6 @@ function onSectionPanelClick (setCurrSection, history, query){
     }
 
     setCurrSection(newSection)
-    search(history, query, newSection)
   }
 }
 
@@ -90,8 +63,6 @@ TODO: make utils folder with URL stuff, keyboard shortcuts, etc
 function App() {
   const history = useHistory();
 
-  const [query, setQuery] = useState('');
-  const queryInput = useRef(null);
   //represents which section we are searching
   //null means that we are using all section
   const [currSection, setCurrSection] = useState(null); 
@@ -99,33 +70,13 @@ function App() {
   const quickLinks = useOnetimeAPIFetch(`${SERVER_URL}/sg/quick-links`, []);
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
 
-  // this feels like this could be in a loop
-  // but you can't use hooks inside a loop. 
-  useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
-  useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
 
-  useHotkeys('ctrl+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQuery, queryInput));
-  useHotkeys('command+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQuery, queryInput));
 
 
   return (
     
         <div className="App">
-          <div className="header">
-            <a className="help-button" href="/help"> <img  src="/helpbutton.svg"/> </a>
-            <a href="/" className="header-text">DAILY BRUIN STYLE GUIDE</a>
-            <div className="header-search-input-button-div">
-              <input 
-                className="header-search-input" 
-                type="text" 
-                ref={queryInput}
-                placeholder={currSection ? `searching ${currSection}` : "search here" }
-                value={query} 
-                onChange={(e) => setQuery(e.target.value)} 
-                onKeyDown={searchOnEnter(history, currSection, setQuery)}/>
-              <button className="header-search-button" onClick={() => search(history, query, currSection)}><img src="/searchbutton.svg"/></button>
-            </div>
-          </div>
+          <Header/>
           <div className="caw-body">
             <div className="search-result-container">
               <Route exact path="/" component={SectionFullListing} />
@@ -136,22 +87,7 @@ function App() {
 
             </div>
 
-            <div className="link-sidebar">
-              <FunctionPanel
-                header="Sections"
-                body={sections.map(x => ({...x, text: x.name}))}
-                callback={onSectionPanelClick(setCurrSection, history, query, currSection)}
-              />
-              <LinkPanel
-                header="Quick Links"
-                body={quickLinks}
-              />
-              <LinkPanel
-                header="Guides"
-                body={guides}
-              />
-
-            </div>
+            <Sidebar/>
           </div>
         </div>
       
