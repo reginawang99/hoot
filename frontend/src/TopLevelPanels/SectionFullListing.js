@@ -36,8 +36,7 @@ function SectionFullListing() {
         if(!isUnmounted){
           setEntries(accum) 
           if (next !== null) {
-            // so it doesn't trigger
-            setTimeout(() => get_pages(next, accum), 500);
+            get_pages(next, accum);
           }
         }
       });
@@ -60,7 +59,7 @@ function SectionFullListing() {
       <div className="search-result-results">
         {
           // since the titles are unique, we can use it as a key
-          entries.map((x) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
+          entries.map((x) => <SearchResult omitSummary={true} term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
         }
       </div>
     </div>

@@ -36,7 +36,7 @@ function onSectionPanelClick (dispatch, query, history){
 }
 
 
-function Sidebar(){
+function Sidebar(props){
 
 	const sections = useOnetimeAPIFetch(`${SERVER_URL}/sg/sections`, []);
 	const quickLinks = useOnetimeAPIFetch(`${SERVER_URL}/sg/quick-links`, []);
@@ -49,6 +49,7 @@ function Sidebar(){
 	return (
 		<div className="link-sidebar">
           <FunctionPanel
+            queryInput={props.queryInput}
             header="Sections"
             body={sections.map(x => ({...x, text: x.name}))}
             callback={onSectionPanelClick(dispatch, query, history)}

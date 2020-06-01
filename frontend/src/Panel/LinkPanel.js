@@ -1,6 +1,11 @@
 import React from 'react';
-import './style.css';
 import PropTypes from 'prop-types';
+import { Route, Link, useHistory, useParams} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../utils/keyboardShortcuts.js'
+
+
+import './style.css';
 
 
 /*
@@ -8,6 +13,17 @@ import PropTypes from 'prop-types';
 */
 export function FunctionPanel(props) {
   const { header, body, callback } = props;
+  const dispatch = useDispatch()
+  const setQuery = (value) => {
+    dispatch({
+      type: "SET_QUERY",
+      payload: {
+        query: value
+      }  
+  })}
+
+  
+
   return (
     <div className="link-panel">
       <div className="link-panel-header">
@@ -15,12 +31,12 @@ export function FunctionPanel(props) {
       </div>
       <ul className="link-panel-list">
         <li key={-1}>
-          <input type="radio" name="action"  onClick={() => callback([])}/>
+          <input onKeyDown={(e) => executeAllShortcuts(e, setQuery, props.queryInput) } type="radio" name="action"  onClick={() => callback([])}/>
           <label className="link-panel-link" for="track">All</label>
         </li>
         {body.map((x, index) => (
           <li key={index}>
-            <input type="radio" name="action"  onClick={() => callback([x])}/>
+            <input onKeyDown={(e) => executeAllShortcuts(e, setQuery, props.queryInput)} type="radio" name="action"  onClick={() => callback([x])}/>
             <label className="link-panel-link" for="track">{x.text}</label>
           </li>
         ))}

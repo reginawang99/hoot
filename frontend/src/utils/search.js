@@ -10,7 +10,7 @@ export function search(history, query, currSection){
 
   // Note: we cannot use `/${sectionString}/${query}`
   // it does not encode url characters 
-  if(query != null)
+  if(query !== null && query !== "")
     encoded_history_push(history, '/search/{sectionString}/search?query={query}', {
       sectionString: sectionString,
       query: query 

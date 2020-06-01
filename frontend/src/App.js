@@ -55,13 +55,13 @@ function App() {
   const quickLinks = useOnetimeAPIFetch(`${SERVER_URL}/sg/quick-links`, []);
   const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
 
-
+  const queryInput = useRef(null);
 
 
   return (
     
         <div className="App">
-          <Header/>
+          <Header queryInput={queryInput}/>
           <div className="caw-body">
             <div className="search-result-container">
               <Route exact path="/" component={SectionFullListing} />
@@ -72,7 +72,7 @@ function App() {
 
             </div>
 
-            <Sidebar/>
+            <Sidebar queryInput={queryInput}/>
           </div>
         </div>
       

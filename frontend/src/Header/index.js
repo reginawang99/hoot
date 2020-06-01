@@ -25,10 +25,10 @@ function searchOnEnter (history, currSection, setQuery, dispatch){
 
 function Header(props) {
   const [query, setQuery] = useState(''); // don't use setQuery directly, use setQueryAndRedux instead
-  const queryInput = useRef(null);
   const history = useHistory();
 
   const currSection = useSelector(state => state.search.section)
+  const actualQuery = useSelector(state => state.search.query)
   const dispatch = useDispatch()
   const setQueryAndRedux = (value) => {
     setQuery(value);
@@ -39,13 +39,17 @@ function Header(props) {
       }  
   })}
 
+  useEffect( () => {
+    setQuery(actualQuery);
+  }, [actualQuery])
+
   	  // this feels like this could be in a loop
   // but you can't use hooks inside a loop. 
-  useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, queryInput));
-  useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, queryInput));
+  useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, props.queryInput));
+  useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, props.queryInput));
 
-  useHotkeys('ctrl+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQueryAndRedux, queryInput));
-  useHotkeys('command+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQueryAndRedux, queryInput));
+  useHotkeys('ctrl+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQueryAndRedux, props.queryInput));
+  useHotkeys('command+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQueryAndRedux, props.queryInput));
 
 
 	return (
@@ -56,7 +60,7 @@ function Header(props) {
 	          <input 
 	            className="header-search-input" 
 	            type="text" 
-	            ref={queryInput}
+	            ref={props.queryInput}
 	            placeholder={currSection ? `searching ${currSection}` : "search here" }
 	            value={query} 
 	            onChange={(e)=>setQueryAndRedux(e.target.value)} 
