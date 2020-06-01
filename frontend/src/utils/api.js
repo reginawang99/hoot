@@ -14,7 +14,6 @@ export function useOnetimeAPIFetch(url, initial) {
 
   useEffect(() => {
     axios.get(url).then(result => {
-      console.log(result)
       setData(result.data)
     }).catch((error) => {
       //TODO

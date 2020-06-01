@@ -12,6 +12,8 @@ from .serializers import StyleGuideEntrySerializer, SectionSerializer, QuickLink
 from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets
 from django.http import FileResponse
+from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 
 from itertools import chain
 from datetime import datetime
@@ -113,6 +115,7 @@ def get_tag_results(query):
 	results.append(starts_with_results)
 	return results
 
+
 """
 return a json object containing all the search results, not paginated
 """
@@ -186,6 +189,27 @@ def recommended_search_results(request):
 	logger.info(f"RECOMMENDED SEARCH {query} {section} in " + str(datetime.now() - startTime))
 	return Response(serializer.data)
 
+# Issue: when we return all at once, it takes way to long to reach the frontend
+# the common solution to this is pagination and loading things one page at a time
+class StandardResultsSetPagination(PageNumberPagination):
+	page_size = 20
+	page_size_query_param = 'page_size'
+	max_page_size = 1000
+
+class StyleGuideEntryListView(generics.ListAPIView):
+	# queryset = StyleGuideEntry.objects.all()
+	serializer_class = StyleGuideEntrySerializer
+	pagination_class = StandardResultsSetPagination
+
+	def get_queryset(self):
+		# Note the use of `get_queryset()` instead of `self.queryset`
+		section = self.request.GET.get("section", None)
+		print(section)
+		if section is not None:
+			section_obj = Section.objects.filter(name=section).first()
+			if section_obj:
+				return StyleGuideEntry.objects.filter(sections__in=[section_obj.id])
+		return StyleGuideEntry.objects.all()
 
 
 @api_view(http_method_names=['GET'])
@@ -216,4 +240,4 @@ def get_single_entry(request, name):
 
 # debug only
 def get_fixture(request):
-    return FileResponse(open("/var/www/new_fixture.json", "rb"))
+	return FileResponse(open("/var/www/new_fixture.json", "rb"))

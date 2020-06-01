@@ -5,6 +5,7 @@ import axios from 'axios';
 import SearchResult from '../SearchResult';
 
 import { SERVER_URL } from '../config';
+import addContentSummary from '../utils/contentSummary'
 
 function results_string(results){
   if (results === null)
@@ -45,17 +46,14 @@ function SearchResultsPanel() {
     axios.get(`${SERVER_URL}/sg/search/`, {
       params: searchParams
     }).then((response) => {
-        const modData = response.data.map((x) => ({ 
-          ...x, 
-          contentSummary: x.content 
-        }));
+        const modData = response.data.map(addContentSummary);
         setSearchResults(modData);
         // the recommended search will execute after the normal search
         // this is because this query is more intense
         axios.get(`${SERVER_URL}/sg/recommended-search-results`, {
           params: searchParams
         }).then((response) => {
-          const modData = response.data.map((x) => ({ ...x, contentSummary: x.content }));
+          const modData = response.data.map(addContentSummary);
           setRecommenedResults(modData)
 
         })
