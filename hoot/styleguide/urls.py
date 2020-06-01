@@ -7,7 +7,7 @@ urlpatterns = [
     path('recommended-search-results', views.recommended_search_results),
 
     # retrieving one style guide entry
-    path('entry/<str:name>', views.get_single_entry),
+    path('entry/<int:id>', views.get_single_entry),
     path("entries/", views.StyleGuideEntryListView.as_view()),
 
     # retrieving general information

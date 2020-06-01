@@ -79,7 +79,7 @@ function SearchResultsPanel() {
 
       <div className="search-result-results">
         {
-          searchResults.map((x, index) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={index} />)
+          searchResults.map((x, index) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={index} />)
         }
       </div>
       <div className="search-result-header-wo-border">
@@ -88,7 +88,7 @@ function SearchResultsPanel() {
       <div className="search-result-results">
         {
           recommendedResults?
-          recommendedResults.map((x, index) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={index} />): null
+          recommendedResults.map((x, index) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={index} />): null
         }
       </div>
     </div>

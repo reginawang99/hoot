@@ -11,13 +11,13 @@ import '../App.css';
 * /entry/entry%20name
 */
 function SingleEntryView() {
-  const { entryName } = useParams();
-  const decoded_entryName = decodeURIComponent(entryName)
+  const { entryID } = useParams();
   const [entry, setEntry] = useState(null);
   const [hasErrored, setHasErrored] = useState(false);
 
   useEffect(() => {
-    axios.get(`${SERVER_URL}/sg/entry/${decoded_entryName}`).then(({ data }) => {
+     window.scrollTo(0, 0);
+    axios.get(`${SERVER_URL}/sg/entry/${entryID}`).then(({ data }) => {
       
       setEntry({
         title: data.title,
@@ -28,14 +28,14 @@ function SingleEntryView() {
     }).catch((error) => {
       setHasErrored(true);
     });
-  }, [decoded_entryName]);
+  }, [entryID]);
 
   if (hasErrored) {
     return (
       <p>
         {' '}
         Unable to find entry for &ldquo;
-        {decoded_entryName}
+        {entryID}
         &rdquo;
       </p>
     );

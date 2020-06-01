@@ -208,8 +208,8 @@ class StyleGuideEntryListView(generics.ListAPIView):
 		if section is not None:
 			section_obj = Section.objects.filter(name=section).first()
 			if section_obj:
-				return StyleGuideEntry.objects.filter(sections__in=[section_obj.id])
-		return StyleGuideEntry.objects.all()
+				return StyleGuideEntry.objects.filter(sections__in=[section_obj.id]).order_by("title")
+		return StyleGuideEntry.objects.all().order_by("title")
 
 
 @api_view(http_method_names=['GET'])
@@ -228,9 +228,8 @@ def get_all_guides(request):
 	return Response(serializer.data)
    
 @api_view(http_method_names=['GET'])
-def get_single_entry(request, name):
-	obj = StyleGuideEntry.objects.filter(title=name)
-	print(name)
+def get_single_entry(request, id):
+	obj = StyleGuideEntry.objects.filter(id=id)
 	if len(obj) == 0:
 		return Response(status=404)
 	elif len(obj) > 1:

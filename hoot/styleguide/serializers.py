@@ -29,7 +29,7 @@ class StyleGuideEntrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StyleGuideEntry
-        fields = ('title', 'content', 'created_at', 'updated_at', 'tags', 'section')
+        fields = ('id','title', 'content', 'created_at', 'updated_at', 'tags', 'section')
 
 
 

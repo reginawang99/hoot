@@ -56,7 +56,7 @@ function SectionFullListing() {
       <div className="search-result-results">
         {
         	// since the titles are unique, we can use it as a key
-        	entries.map((x) => <SearchResult term={x.title} contentSummary={x.contentSummary} key={x.title} />)
+        	entries.map((x) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
         }
       </div>
     </div>

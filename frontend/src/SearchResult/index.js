@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown/with-html';
 
 function SearchResult(props) {
   return (
-    <Link className="entry" to={`/entry/${encodeURIComponent(props.term)}`}>
+    <Link className="entry" to={`/entry/${props.entryID}`}>
       <span className="entry-term">{props.term}</span>
       <ReactMarkdown escapeHtml={false} source={props.contentSummary} />
     </Link>
@@ -19,6 +19,7 @@ function SearchResult(props) {
 SearchResult.propTypes = {
   term: PropTypes.string.isRequired,
   contentSummary: PropTypes.string.isRequired,
+  entryID: PropTypes.number.isRequired
 };
 
 export default SearchResult;
