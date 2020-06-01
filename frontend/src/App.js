@@ -20,21 +20,6 @@ import {encoded_history_push} from './utils/urls.js'
 
 
 
-
-function onSectionPanelClick (setCurrSection){
-  return (x) => { // x is passed by FunctionPanel. its an array of what has been selected
-    let newSection;
-    if(x.length === 0){
-      // we are selecting no sections
-      newSection = null
-    } else {
-      newSection = x[0].text; // for now we can only filter by one section
-    }
-
-    setCurrSection(newSection)
-  }
-}
-
 /*
 * Root component
 *  Every single page has the search bar and the sidebar
@@ -83,7 +68,7 @@ function App() {
               <Route exact path="/entry/:entryID" component={SingleEntryView} />
               <Route exact path="/help" component={Help} />
               <Route exact path="/search/:section" component={SectionFullListing} />
-              <Route exact path="/search/:section/:query" component={SearchResultsPanel} />
+              <Route exact path="/search/:section/search" component={SearchResultsPanel} />
 
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import SearchResult from '../SearchResult';
 
@@ -15,11 +15,15 @@ function results_string(results){
   return `${results.length} RESULTS`
 }
 
+function useUrlSearchParams() {
+  return new URLSearchParams(useLocation().search);
+}
 
 
 function SearchResultsPanel() {
-  const { query, section } = useParams();
-  const decoded_query = query? decodeURIComponent(query): null
+  const { section } = useParams();
+  const urlSearchParams = useUrlSearchParams();
+  const query = urlSearchParams.get("query")
   const decoded_section = section? decodeURIComponent(section): null
 
   const [searchResults, setSearchResults] = useState(null);
@@ -31,8 +35,8 @@ function SearchResultsPanel() {
     setRecommenedResults(null)
 
     let searchParams = {};
-    if(decoded_query !== null)
-      searchParams['query'] = decoded_query
+    if(query !== null)
+      searchParams['query'] = query
     if(!isSearchingAll)
       searchParams["section"] = decoded_section
 
@@ -51,7 +55,7 @@ function SearchResultsPanel() {
 
         })
     });
-  }, [decoded_query, decoded_section, isSearchingAll]);
+  }, [query, decoded_section, isSearchingAll]);
 
   if (searchResults === null) return <p> Loading ... </p>;
 

@@ -4,6 +4,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector, useDispatch } from 'react-redux'
 
 import {encoded_history_push} from '../utils/urls.js'
+import {search} from "../utils/search"
 import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../utils/keyboardShortcuts.js'
 import "../App.css"
 
@@ -21,38 +22,30 @@ function searchOnEnter (history, currSection, setQuery, dispatch){
   }
 }
 
-function search(history, query, currSection){
-  let sectionString;
-  if(currSection === null)
-    sectionString = "all";
-  else
-    sectionString = currSection
-
-  // Note: we cannot use `/${sectionString}/${query}`
-  // it does not encode url characters 
-  encoded_history_push(history, '/search/{sectionString}/{query}', {
-    sectionString: sectionString,
-    query: query 
-  })
-}
 
 function Header(props) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(''); // don't use setQuery directly, use setQueryAndRedux instead
   const queryInput = useRef(null);
   const history = useHistory();
 
   const currSection = useSelector(state => state.search.section)
   const dispatch = useDispatch()
-
-  console.log(currSection);
+  const setQueryAndRedux = (value) => {
+    setQuery(value);
+    dispatch({
+      type: "SET_QUERY",
+      payload: {
+        query: value
+      }  
+  })}
 
   	  // this feels like this could be in a loop
   // but you can't use hooks inside a loop. 
-  useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
-  useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQuery, queryInput));
+  useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, queryInput));
+  useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, queryInput));
 
-  useHotkeys('ctrl+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQuery, queryInput));
-  useHotkeys('command+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQuery, queryInput));
+  useHotkeys('ctrl+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQueryAndRedux, queryInput));
+  useHotkeys('command+l', (e) => KEYBOARD_SHORTCUTS['ctrl+l'](e, setQueryAndRedux, queryInput));
 
 
 	return (
@@ -66,15 +59,8 @@ function Header(props) {
 	            ref={queryInput}
 	            placeholder={currSection ? `searching ${currSection}` : "search here" }
 	            value={query} 
-	            onChange={(e) => {
-                setQuery(e.target.value);
-                dispatch({
-                  type: "SET_QUERY",
-                  payload: {
-                    query: e.target.value
-                  }  
-              })}} 
-	            onKeyDown={searchOnEnter(history, currSection, setQuery, dispatch)}/>
+	            onChange={(e)=>setQueryAndRedux(e.target.value)} 
+	            onKeyDown={searchOnEnter(history, currSection, setQueryAndRedux, dispatch)}/>
 	         <button className="header-search-button" onClick={() => search(history, query, currSection, dispatch)}><img src="/searchbutton.svg"/></button>
         	</div>
         </div>

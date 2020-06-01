@@ -18,6 +18,7 @@ function SectionFullListing() {
 
   useEffect(() => {
     setEntries([])
+    let isUnmounted = false
 
     let searchParams = {};
     if(!isSearchingAll)
@@ -32,15 +33,19 @@ function SectionFullListing() {
       }).then((response) => {
         const {results, next} = response.data;
         accum = accum.concat(results.map(addContentSummary))
-        setEntries(accum) 
-        if (next !== null) {
-          setTimeout(() => get_pages(next, accum));
+        if(!isUnmounted){
+          setEntries(accum) 
+          if (next !== null) {
+            // so it doesn't trigger
+            setTimeout(() => get_pages(next, accum), 500);
+          }
         }
       });
     
   }
 
   get_pages(`${SERVER_URL}/sg/entries/`, [])
+  return () => {isUnmounted=true};
   }, [decoded_section, isSearchingAll]);
 
 

@@ -32,13 +32,14 @@ DEBUG=True
 1. Make section home show all entries for section ✓
 1. Make homepage show all entries ✓
 1. Why is "10 Questions" not working (turns out django doesn't like escaped ampersands)
-1. There were duplicates in the spread sheet feels bad man
-1. Don't send request for recommended results when on section homepage
+1. ~There were duplicates in the spread sheet feels bad man~ nope there were not
+1. Don't send request for recommended results when on section homepage ✓
 1. Don't send request for sections, quick links and such every time we search.
-1. Fix everything in views to use "sections" not section
+1. Fix everything in views to use "sections" not section ✓
 1. Logging
-1. logging stats
-1. Caching?
+1. logging stats ✓
+1. Multiple sources of truth in Header (query) and Sidebar (section)
+1. Honestly just refactor the entire frontend to look like meow
 
 ## Small things
 1. Improve docker file

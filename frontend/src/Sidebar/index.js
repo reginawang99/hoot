@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Link, useHistory, useParams} from 'react-router-dom';
-
-
+import {search} from "../utils/search"
 
 import { useOnetimeAPIFetch } from '../utils/api.js'
 import { SERVER_URL } from '../config';
@@ -11,26 +10,6 @@ import {encoded_history_push} from '../utils/urls.js'
 
 
 import "../App.css"
-
-function search(history, query, currSection){
-  let sectionString;
-  if(currSection === null)
-    sectionString = "all";
-  else
-    sectionString = currSection
-
-  // Note: we cannot use `/${sectionString}/${query}`
-  // it does not encode url characters 
-  if(query != null)
-    encoded_history_push(history, '/search/{sectionString}/{query}', {
-      sectionString: sectionString,
-      query: query 
-    })
-  else
-    encoded_history_push(history, '/search/{sectionString}/', {
-      sectionString: sectionString,
-    })
-}
 
 
 // the following functions are curried
