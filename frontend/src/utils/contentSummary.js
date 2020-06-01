@@ -35,7 +35,8 @@ function addContentSummary(entry){
 	let foundList = false;
 	for(let i = 0; i < lines.length; i++){
 		const line = lines[i].replace("\r", "")
-		tmp += line + "\n"
+		if(line === "") continue;
+		tmp += line + "\r\n"
 		if(isMDList(line)) {
 			// means it is a list
 			foundList = true
