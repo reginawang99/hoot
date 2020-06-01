@@ -48,8 +48,15 @@ function searchOnEnter (history, currSection, setQuery){
 
 
 function onSectionPanelClick (setCurrSection, history, query){
-  return (x) => { // x is passed by FunctionPanel 
-    const newSection = x.text;
+  return (x) => { // x is passed by FunctionPanel. its an array of what has been selected
+    let newSection;
+    if(x.length === 0){
+      // we are selecting no sections
+      newSection = null
+    } else {
+      newSection = x[0].text; // for now we can only filter by one section
+    }
+
     setCurrSection(newSection)
     search(history, query, newSection)
   }
@@ -133,7 +140,7 @@ function App() {
               <FunctionPanel
                 header="Sections"
                 body={sections.map(x => ({...x, text: x.name}))}
-                callback={onSectionPanelClick(setCurrSection, history, query)}
+                callback={onSectionPanelClick(setCurrSection, history, query, currSection)}
               />
               <LinkPanel
                 header="Quick Links"

@@ -14,11 +14,17 @@ export function FunctionPanel(props) {
         {header}
       </div>
       <ul className="link-panel-list">
+        <li key={-1}>
+          <input type="radio" name="action"  onClick={() => callback([])}/>
+          <label className="link-panel-link" for="track">All</label>
+        </li>
         {body.map((x, index) => (
           <li key={index}>
-            <a className="link-panel-link" onClick={() => callback(x)}>{x.text}</a>
+            <input type="radio" name="action"  onClick={() => callback([x])}/>
+            <label className="link-panel-link" for="track">{x.text}</label>
           </li>
         ))}
+        
       </ul>
     </div>
   );
