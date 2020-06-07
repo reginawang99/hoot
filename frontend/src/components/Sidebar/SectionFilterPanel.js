@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {  useHistory} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -66,11 +65,3 @@ export default function SectionFilterPanel(props) {
     </div>
   );
 }
-
-SectionFilterPanel.propTypes = {
-  header: PropTypes.string.isRequired,
-  body: PropTypes.PropTypes.arrayOf(PropTypes.shape({
-    text: PropTypes.string,
-  })).isRequired,
-  callback: PropTypes.func
-};

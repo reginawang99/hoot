@@ -20,7 +20,7 @@ function Entry() {
   const [hasErrored, setHasErrored] = useState(false);
 
   useEffect(() => {
-     window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     axios.get(`${SERVER_URL}/sg/entry/${entryID}`).then(({ data }) => {
       
       setEntry({
