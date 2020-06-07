@@ -10,10 +10,10 @@ import addContentSummary from '../../utils/contentSummary'
 
 function SectionFullListing() {
   const { section } = useParams();
-  const decoded_section = section? decodeURIComponent(section): null;
+  const decoded_section = section? decodeURIComponent(section): "all";
 
   const [entries, setEntries] = useState([]);
-  const isSearchingAll = decoded_section === "all" || decoded_section === null;
+  const isSearchingAll = decoded_section === "all";
 
 
   useEffect(() => {
@@ -40,11 +40,11 @@ function SectionFullListing() {
           }
         }
       });
-    
-  }
+      
+    }
 
-  get_pages(`${SERVER_URL}/sg/entries/`, [])
-  return () => {isUnmounted=true};
+    get_pages(`${SERVER_URL}/sg/entries/`, [])
+    return () => {isUnmounted=true};
   }, [decoded_section, isSearchingAll]);
 
 

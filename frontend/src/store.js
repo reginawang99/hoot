@@ -1,5 +1,5 @@
 import rootReducer from './reducers'
-import { applyMiddleware, compose, createStore } from 'redux'
+import { createStore } from 'redux'
 
 export default function configureStore(preloadedState) {
   const store = createStore(

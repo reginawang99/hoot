@@ -24,11 +24,11 @@ function SearchResultsPanel() {
   const { section } = useParams();
   const urlSearchParams = useUrlSearchParams();
   const query = urlSearchParams.get("query")
-  const decoded_section = section? decodeURIComponent(section): null
+  const decoded_section = section? decodeURIComponent(section): "all"
 
   const [searchResults, setSearchResults] = useState(null);
   const [recommendedResults, setRecommenedResults] = useState(null);
-  const isSearchingAll = decoded_section === "all" || decoded_section === null;
+  const isSearchingAll = decoded_section === "all";
 
   useEffect(() => {
     setSearchResults(null)

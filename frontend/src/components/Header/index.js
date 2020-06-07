@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Route, Link, useHistory, useParams} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {  useHistory,} from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector, useDispatch } from 'react-redux'
 
-import {encoded_history_push} from '../../utils/urls.js'
 import {search} from "../../utils/search"
 import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../../utils/keyboardShortcuts.js'
 import "../App.css"
 
 
 
-function searchOnEnter (history, currSection, setQuery, dispatch){
+function searchOnEnter (history, currSection, setQuery){
   // returns a function which is a closure on history, currSection and setQuery 
   return (e) => {
     executeAllShortcuts(e, setQuery, null) //we won't pass it the <input> tag because its already focused
@@ -24,6 +23,8 @@ function searchOnEnter (history, currSection, setQuery, dispatch){
 
 
 function Header(props) {
+  // unfortunately, react warns that an uncontrolled input is controlled 
+  // if we set it using redux directly.
   const [query, setQuery] = useState(''); // don't use setQuery directly, use setQueryAndRedux instead
   const history = useHistory();
 
@@ -31,8 +32,8 @@ function Header(props) {
   const actualQuery = useSelector(state => state.search.query)
   const dispatch = useDispatch()
   const setQueryAndRedux = (value) => {
-    setQuery(value);
-    dispatch({
+    setQuery(value); // set local state
+    dispatch({ // set redux state
       type: "SET_QUERY",
       payload: {
         query: value
@@ -43,7 +44,7 @@ function Header(props) {
     setQuery(actualQuery);
   }, [actualQuery])
 
-  	  // this feels like this could be in a loop
+  // this feels like this could be in a loop
   // but you can't use hooks inside a loop. 
   useHotkeys('ctrl+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, props.queryInput));
   useHotkeys('command+k', (e) => KEYBOARD_SHORTCUTS['ctrl+k'](e, setQueryAndRedux, props.queryInput));
@@ -54,7 +55,7 @@ function Header(props) {
 
 	return (
 		<div className="header">
-	        <a className="help-button" href="/help"> <img  src="/helpbutton.svg"/> </a>
+	        <a className="help-button" href="/help"> <img alt="help" src="/helpbutton.svg"/> </a>
 	        <a href="/" className="header-text">DAILY BRUIN STYLE GUIDE</a>
 	        <div className="header-search-input-button-div">
 	          <input 
@@ -64,8 +65,8 @@ function Header(props) {
 	            placeholder={currSection ? `searching ${currSection}` : "search here" }
 	            value={query} 
 	            onChange={(e)=>setQueryAndRedux(e.target.value)} 
-	            onKeyDown={searchOnEnter(history, currSection, setQueryAndRedux, dispatch)}/>
-	         <button className="header-search-button" onClick={() => search(history, query, currSection, dispatch)}><img src="/searchbutton.svg"/></button>
+	            onKeyDown={searchOnEnter(history, currSection, setQueryAndRedux)}/>
+	         <button className="header-search-button" onClick={() => search(history, query, currSection)}><img alt="search" src="/searchbutton.svg"/></button>
         	</div>
         </div>
 	)

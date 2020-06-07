@@ -3,8 +3,8 @@
 *          react router useParams does not decode urls
 *  
 *  URL encoding: 
-*    https://hoot.dailybruin.com/search/A&E/Kerckhoff Hall     [not encoded]
-*    https://hoot.dailybruin.com/search/A%8E/Kerckhoff%20Hall  [encoded]
+*    https://hoot.dailybruin.com/search/A&E/     [not encoded]
+*    https://hoot.dailybruin.com/search/A%8E/  [encoded]
 */
 
 /**
@@ -36,9 +36,9 @@ function () {
 
 
 export function encoded_history_push(history, url, args) {
-	let encoded_args = {}
-	Object.keys(args).map( (key) => {
-		encoded_args[key] = encodeURIComponent(args[key])
-	})
+	let encoded_args = Object.keys(args).reduce( (accum, key) => {
+		accum[key] = encodeURIComponent(args[key])
+        return accum
+	}, {})
 	history.push(url.formatUnicorn(encoded_args));
 }

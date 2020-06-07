@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Link, useHistory, useParams} from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
-import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../../utils/keyboardShortcuts.js'
 
 
 import './style.css';

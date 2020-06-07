@@ -3,9 +3,9 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown/with-html';
 
 import { useParams } from 'react-router-dom';
-import { SERVER_URL, DOMAIN } from '../../config';
-import '../App.css';
+import { SERVER_URL } from '../../config';
 import {LightBoxImage, LightBoxModal} from "../LightBoxImage"
+import '../App.css';
 
 
 

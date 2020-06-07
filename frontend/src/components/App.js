@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Route, Link, useHistory, useParams} from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Route} from 'react-router-dom';
+import {  useDispatch } from 'react-redux'
 
 
 import './App.css';
@@ -9,53 +10,48 @@ import Sidebar from "./Sidebar"
 import SearchResults from './SearchResults';
 import Entry from './Entry';
 import SectionLanding from "./SectionLanding"
-import { SERVER_URL } from '../config';
-import axios from 'axios';
+import {  executeAllShortcuts } from '../utils/keyboardShortcuts.js'
 
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useOnetimeAPIFetch } from '../utils/api.js'
-import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../utils/keyboardShortcuts.js'
-import {encoded_history_push} from '../utils/urls.js'
+
+
 
 
 
 /*
-* Root component
-*  Every single page has the search bar and the sidebar
-*  there is a react router switch for the body of the page. it displays:
-*     * Welcome page       TODO: rename to Welcome
-*     * Section Home       TODO: rename to Section Landing
-*     * Entry    TODO: rename Entry
-*     * SearchResults TODO: rename to SearchResults
-*  all of these components are found in TopLevelPanels (TODO: rename to AppBody)
-* 
-* 
-* One source of Truth (urls):
-*  All of the data for searching is stored in the URL, not local state.
-*  So that people can copy urls to searches or entries in the style guide
-*  It also simplifies code cuz truth comes from one source (hehe redux philosophy)
-*
-*  Since everything is in urls, we must encode all weird characters 
-*  https://www.w3schools.com/html/html_urlencode.asp
-* 
-*  When we fetch data from urls, we must decode the urls.
+Hoot has two sources of truth:
+  SectionLanding/SearchResults: URL params from react router
+  Header/Sidebar: Redux state 
+ 
+Whenever we want to make a new search, we must flush the Redux state section and query into the url.
 
-TODO: do we need index.css
-TODO: make utils folder with URL stuff, keyboard shortcuts, etc
+Based on the url react router decides whether to load SectionLanding or SearchResults. 
+The former lists everything; the later shows search results
+
+Flow charts: 
+ * change search query input -> change redux state
+ * press enter -> change url -> re render results page
+ * click section -> change redux -> change url -> re render results page
 */
 
 function App() {
-  const history = useHistory();
 
-  //represents which section we are searching
-  //null means that we are using all section
-  const [currSection, setCurrSection] = useState(null); 
-  const sections = useOnetimeAPIFetch(`${SERVER_URL}/sg/sections`, []);
-  const quickLinks = useOnetimeAPIFetch(`${SERVER_URL}/sg/quick-links`, []);
-  const guides = useOnetimeAPIFetch(`${SERVER_URL}/sg/guides`, []);
+  // used by keyboardShortcutsInterceptor
+  const dispatch = useDispatch()
+  const setQuery = (value) => {
+    dispatch({
+      type: "SET_QUERY",
+      payload: {
+        query: value
+      }  
+  })}
 
+  // set by header to be the search input
   const queryInput = useRef(null);
 
+  // when an input tag is focused, keyboard shortcuts won't work
+  // so for example, the radio buttons for selecting the section won't work
+  // so we have to pass this function to onKeyDown for the radio buttons
+  const keyboardShortcutsInterceptor = (e) => executeAllShortcuts(e, setQuery, queryInput)
 
   return (
     
@@ -71,7 +67,9 @@ function App() {
 
             </div>
 
-            <Sidebar queryInput={queryInput}/>
+            <Sidebar 
+              keyboardShortcutsInterceptor={keyboardShortcutsInterceptor} 
+            />
           </div>
         </div>
       

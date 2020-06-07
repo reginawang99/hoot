@@ -1,6 +1,5 @@
-import { SERVER_URL } from '../config';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 /*
 * Everything dealing with GET, POST requests

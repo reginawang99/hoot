@@ -1,10 +1,9 @@
 const initialState = {
-  query: null,
-  section: null,
+  query: "",
+  section: "all",
 };
 export default function search(state = initialState, action) {
-  console.log(state);
-  console.log(action)
+  
   switch (action.type) {
     case "SET_QUERY": {
       return {

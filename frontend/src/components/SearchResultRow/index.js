@@ -2,7 +2,6 @@ import React from 'react';
 import './style.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ReactMarkdownWithHTML from 'react-markdown/with-html';
 import ReactMarkdown from 'react-markdown';
 
 
