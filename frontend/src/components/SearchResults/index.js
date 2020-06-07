@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import SearchResult from '../SearchResult';
+import SearchResultRow from '../SearchResultRow';
 
-import { SERVER_URL } from '../config';
-import addContentSummary from '../utils/contentSummary'
+import { SERVER_URL } from '../../config';
+import addContentSummary from '../../utils/contentSummary'
 
 function results_string(results){
   if (results === null)
@@ -76,7 +76,7 @@ function SearchResultsPanel() {
 
       <div className="search-result-results">
         {
-          searchResults.map((x, index) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={index} />)
+          searchResults.map((x, index) => <SearchResultRow term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={index} />)
         }
       </div>
       <div className="search-result-header-wo-border">
@@ -85,7 +85,7 @@ function SearchResultsPanel() {
       <div className="search-result-results">
         {
           recommendedResults?
-          recommendedResults.map((x, index) => <SearchResult term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={index} />): null
+          recommendedResults.map((x, index) => <SearchResultRow term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={index} />): null
         }
       </div>
     </div>

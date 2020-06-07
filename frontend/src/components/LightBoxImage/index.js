@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {DOMAIN } from '../config';
+import {DOMAIN } from '../../config';
 import "./lightbox.css"
 
 

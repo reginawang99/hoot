@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import SearchResult from '../SearchResult';
+import SearchResultRow from '../SearchResultRow';
 
-import { SERVER_URL } from '../config';
-import addContentSummary from '../utils/contentSummary'
+import { SERVER_URL } from '../../config';
+import addContentSummary from '../../utils/contentSummary'
 
 
 function SectionFullListing() {
-  const { query, section } = useParams();
+  const { section } = useParams();
   const decoded_section = section? decodeURIComponent(section): null;
 
   const [entries, setEntries] = useState([]);
@@ -59,7 +59,7 @@ function SectionFullListing() {
       <div className="search-result-results">
         {
           // since the titles are unique, we can use it as a key
-          entries.map((x) => <SearchResult omitSummary={true} term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
+          entries.map((x) => <SearchResultRow omitSummary={true} term={x.title} entryID={x.id} contentSummary={x.contentSummary} key={x.title} />)
         }
       </div>
     </div>

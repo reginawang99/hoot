@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Link, useHistory, useParams} from 'react-router-dom';
-import {search} from "../utils/search"
+import {search} from "../../utils/search"
 
-import { useOnetimeAPIFetch } from '../utils/api.js'
-import { SERVER_URL } from '../config';
-import {LinkPanel, FunctionPanel} from '../Panel/LinkPanel';
-import {encoded_history_push} from '../utils/urls.js'
+import { useOnetimeAPIFetch } from '../../utils/api.js'
+import { SERVER_URL } from '../../config';
+import LinkPanel from './LinkPanel';
+import SectionFilterPanel from './SectionFilterPanel';
+import {encoded_history_push} from '../../utils/urls.js'
 
 
 import "../App.css"
@@ -48,7 +49,7 @@ function Sidebar(props){
 
 	return (
 		<div className="link-sidebar">
-          <FunctionPanel
+          <SectionFilterPanel
             queryInput={props.queryInput}
             header="Sections"
             body={sections.map(x => ({...x, text: x.name}))}

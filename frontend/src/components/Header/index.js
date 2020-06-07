@@ -3,9 +3,9 @@ import { Route, Link, useHistory, useParams} from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector, useDispatch } from 'react-redux'
 
-import {encoded_history_push} from '../utils/urls.js'
-import {search} from "../utils/search"
-import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../utils/keyboardShortcuts.js'
+import {encoded_history_push} from '../../utils/urls.js'
+import {search} from "../../utils/search"
+import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../../utils/keyboardShortcuts.js'
 import "../App.css"
 
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown/with-html';
 
 import { useParams } from 'react-router-dom';
-import { SERVER_URL, DOMAIN } from '../config';
+import { SERVER_URL, DOMAIN } from '../../config';
 import '../App.css';
 import {LightBoxImage, LightBoxModal} from "../LightBoxImage"
 
@@ -13,7 +13,7 @@ import {LightBoxImage, LightBoxModal} from "../LightBoxImage"
 /**
 * /entry/12
 */
-function SingleEntryView() {
+function Entry() {
   const { entryID } = useParams();
   const [entry, setEntry] = useState(null);
   const [modalImageSrc, setModalImageSrc] = useState(null); //null means its closed, any string means its o
@@ -65,4 +65,4 @@ function SingleEntryView() {
   );
 }
 
-export default SingleEntryView;
+export default Entry;

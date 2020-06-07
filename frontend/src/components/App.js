@@ -3,20 +3,19 @@ import { Route, Link, useHistory, useParams} from 'react-router-dom';
 
 
 import './App.css';
-import {LinkPanel, FunctionPanel} from './Panel/LinkPanel';
-import Help from './TopLevelPanels/Help'
+import Help from './Help'
 import Header from "./Header"
 import Sidebar from "./Sidebar"
-import SearchResultsPanel from './TopLevelPanels/SearchResultsPanel';
-import SingleEntryView from './TopLevelPanels/SingleEntryView';
-import SectionFullListing from "./TopLevelPanels/SectionFullListing"
-import { SERVER_URL } from './config';
+import SearchResults from './SearchResults';
+import Entry from './Entry';
+import SectionLanding from "./SectionLanding"
+import { SERVER_URL } from '../config';
 import axios from 'axios';
 
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useOnetimeAPIFetch } from './utils/api.js'
-import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from './utils/keyboardShortcuts.js'
-import {encoded_history_push} from './utils/urls.js'
+import { useOnetimeAPIFetch } from '../utils/api.js'
+import { KEYBOARD_SHORTCUTS, executeAllShortcuts } from '../utils/keyboardShortcuts.js'
+import {encoded_history_push} from '../utils/urls.js'
 
 
 
@@ -26,8 +25,8 @@ import {encoded_history_push} from './utils/urls.js'
 *  there is a react router switch for the body of the page. it displays:
 *     * Welcome page       TODO: rename to Welcome
 *     * Section Home       TODO: rename to Section Landing
-*     * SingleEntryView    TODO: rename Entry
-*     * SearchResultsPanel TODO: rename to SearchResults
+*     * Entry    TODO: rename Entry
+*     * SearchResults TODO: rename to SearchResults
 *  all of these components are found in TopLevelPanels (TODO: rename to AppBody)
 * 
 * 
@@ -64,11 +63,11 @@ function App() {
           <Header queryInput={queryInput}/>
           <div className="caw-body">
             <div className="search-result-container">
-              <Route exact path="/" component={SectionFullListing} />
-              <Route exact path="/entry/:entryID" component={SingleEntryView} />
+              <Route exact path="/" component={SectionLanding} />
+              <Route exact path="/entry/:entryID" component={Entry} />
               <Route exact path="/help" component={Help} />
-              <Route exact path="/search/:section" component={SectionFullListing} />
-              <Route exact path="/search/:section/search" component={SearchResultsPanel} />
+              <Route exact path="/search/:section" component={SectionLanding} />
+              <Route exact path="/search/:section/search" component={SearchResults} />
 
             </div>
 
