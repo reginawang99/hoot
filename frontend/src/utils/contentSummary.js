@@ -3,7 +3,7 @@ function isMDList(input){
 	if(input.length < 3) 
 		return false;
 	if(input[0] === "*" && input[1] === " "){
-		let numStars = 0;
+		let numStars = 0; // pairs of stars = bold or italic. Therefore make sure theres an odd one out
 		for(let i = 0; i < input.length; i++) {
 			if(input[i] === "*")
 				numStars++;
@@ -11,6 +11,11 @@ function isMDList(input){
 
 		return numStars %2 ===1;
 	}
+}
+
+function removeMDImages(input) {
+	// ![](/url/goes/here)
+	return input.replace(/!\[\]\(.*\)/,"");
 }
 
 
@@ -48,6 +53,18 @@ function addContentSummary(entry){
 		
 	}
 	contentSummary = tmp;
+
+
+	// lastly, we don't want images in the content summary
+	tmp = ""
+	lines = contentSummary.split("\n");
+	for(let i = 0; i < lines.length; i++){
+		const line = removeMDImages(lines[i].replace("\r", ""))
+		if(line === "") continue;
+		tmp += line + "\r\n"
+	}
+	contentSummary = tmp;
+
 
 
 	// add trailing [...] if we actually truncated
