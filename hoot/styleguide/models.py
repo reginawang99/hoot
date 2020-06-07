@@ -13,6 +13,9 @@ class Section(models.Model):
 	def __str__(self):
 		return self.name
 
+	class Meta:
+		ordering = ['name']
+
 class StyleGuideEntry(models.Model):
 	tags = models.ManyToManyField(Tag, db_index=True) #can we index this? I guess we can
 	title = models.CharField(max_length=75, db_index=True, unique=True) # definitely index this because we will search a looot
@@ -36,9 +39,15 @@ class QuickLink(models.Model):
 	def __str__(self):
 		return self.text
 
+	class Meta:
+		ordering = ['text']
+
 class Guide(models.Model):
 	text = models.CharField(max_length=300)
 	url = models.URLField()
 
 	def __str__(self):
 		return self.text
+
+	class Meta:
+		ordering = ['text']

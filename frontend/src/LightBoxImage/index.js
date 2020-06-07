@@ -7,7 +7,7 @@ export function LightBoxImage(props) {
   return <img 
   	className="hover-shadow cursor" 
   	onClick={()=>props.onClick(props.src)} 
-  	src={DOMAIN + `/${props.src}`} 
+  	src={DOMAIN + `${props.src}`} 
   />
 }
 
