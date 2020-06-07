@@ -3,16 +3,20 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown/with-html';
 
 import { useParams } from 'react-router-dom';
-import { SERVER_URL } from '../config';
+import { SERVER_URL, DOMAIN } from '../config';
 import '../App.css';
+import {LightBoxImage, LightBoxModal} from "../LightBoxImage"
+
+
 
 
 /**
-* /entry/entry%20name
+* /entry/12
 */
 function SingleEntryView() {
   const { entryID } = useParams();
   const [entry, setEntry] = useState(null);
+  const [modalImageSrc, setModalImageSrc] = useState(null); //null means its closed, any string means its o
   const [hasErrored, setHasErrored] = useState(false);
 
   useEffect(() => {
@@ -45,11 +49,17 @@ function SingleEntryView() {
 
   return (
     <div className="search-result-body">
+      <LightBoxModal open={modalImageSrc !== null} onClick={setModalImageSrc} src={modalImageSrc}/>
       <div className="search-result-header-inverse">
         {entry.title}
       </div>
       <div className="search-result-results">
-          <ReactMarkdown escapeHtml={false} source={entry.content} />
+          <ReactMarkdown 
+            escapeHtml={false} 
+            source={entry.content}
+            renderers={{
+              image: (props) => <LightBoxImage {...props} onClick={setModalImageSrc}/>
+            }} />
       </div>
     </div>
   );

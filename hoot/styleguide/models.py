@@ -33,6 +33,12 @@ class QuickLink(models.Model):
 	text = models.CharField(max_length=300)
 	url = models.URLField()
 
+	def __str__(self):
+		return self.text
+
 class Guide(models.Model):
 	text = models.CharField(max_length=300)
 	url = models.URLField()
+
+	def __str__(self):
+		return self.text

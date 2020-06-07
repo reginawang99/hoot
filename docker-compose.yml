@@ -1,8 +1,7 @@
 version: "3"
 services:
-  nginx:
-    image: nginxhoot:latest
-    container_name: nginxhoot
+  web:
+    image: hoot
     volumes:
       - ./:/var/www/
     ports:

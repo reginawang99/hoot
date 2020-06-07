@@ -16,11 +16,6 @@ DEBUG=True
 1. `npm start`
 1. go to `localhost:3000` in web browser
 
-## Plan
-1. Solve dups problem  ✓
-1. Log stats
-2. caching on main page
-
 
 ## notes for neil
 1. Fix data from spreadsheets function   ✓
@@ -40,6 +35,9 @@ DEBUG=True
 1. logging stats ✓
 1. Multiple sources of truth in Header (query) and Sidebar (section)
 1. Honestly just refactor the entire frontend to look like meow
+1. Unit testing for front end functions and backend
+1. frontend confusing variable and function names
+1. test that url stuff works ?query=125!@#$%^&()
 
 ## Small things
 1. Improve docker file
@@ -54,3 +52,4 @@ DEBUG=True
 1. Massive housekeeping of App.js:
   1. Keyboard shortcuts have 2 places of duplicate code
   1. put helper functions outside
+1. Actually make the radio buttons update according to redux state LOL
