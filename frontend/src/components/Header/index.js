@@ -56,7 +56,10 @@ function Header(props) {
 	return (
 		<div className="header">
 	        <a className="help-button" href="/help"> <img alt="help" src="/helpbutton.svg"/> </a>
-	        <a href="/" className="header-text">DAILY BRUIN STYLE GUIDE</a>
+          
+	        <a href="/" className="header-text">
+            <img alt="Hoot Logo" className="hoot-logo" src="/hoot-03.svg"/>
+          </a>
 	        <div className="header-search-input-button-div">
 	          <input 
 	            className="header-search-input" 
