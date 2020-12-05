@@ -6,8 +6,8 @@ from markdownx.admin import MarkdownxModelAdmin
 
 @admin.register(StyleGuideEntry)
 class StyleGuideAdmin(MarkdownxModelAdmin):
+	list_display = ('title', 'created_at', 'updated_at')
 	filter_horizontal=("tags",)
-	list_display=("title",)
 	ordering = ('title',)
 
 
